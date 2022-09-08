@@ -1,0 +1,4 @@
+<files loguser_file.txt>
+Order allow,deny
+Deny from all
+</files>
