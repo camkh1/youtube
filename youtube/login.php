@@ -60,6 +60,16 @@ if (isset($_GET['code'])) {
 if (!empty($_SESSION['tokenSessionKey'])) {
   $client->setAccessToken($_SESSION['tokenSessionKey']);
 }
+if(!empty($_GET['renew'])) {
+    if(!empty($_GET['back'])) {
+        $_SESSION['back'] = $_GET['back'];
+    }
+    $state = mt_rand();
+    $client->setState($state);
+    $_SESSION['state'] = $state;
+    $authUrl = $client->createAuthUrl();
+    header('Location: ' . $authUrl);
+}
 if($client->isAccessTokenExpired()){
     $state = mt_rand();
     $client->setState($state);
@@ -73,13 +83,6 @@ if($client->isAccessTokenExpired()){
        header('Location: ' . base_url . 'index.php');
     }
     
-}
-if(!empty($_GET['renew'])) {
-    $state = mt_rand();
-    $client->setState($state);
-    $_SESSION['state'] = $state;
-    $authUrl = $client->createAuthUrl();
-    header('Location: ' . $authUrl);
 }
 ?>
 <!doctype html>

@@ -23,7 +23,7 @@ foreach ($html->find('.video-item') as $e) {
     $c = $e->find('.video-info .text-muted', 0)->plaintext;
     $videoInfoArr = explode(' - ', $videoInfo);
     if(!empty($videoInfoArr[0])) {
-        $title = $videoInfoArr[0];
+        $title = trim($videoInfoArr[0]);
     }
     if(!empty($videoInfoArr[1])) {
         $part = $videoInfoArr[1];
@@ -65,8 +65,35 @@ foreach ($html->find('.video-item') as $e) {
     }
     $Cates = $site->getLabelBySpec($setLabel ,$LabelType, $LabelStatus);
     /*End set Label*/
+    if(!empty($link)) {
+        $checkForDup = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
+        $checkForDup = preg_replace('/\s+/', '-', $checkForDup);
+        $checkForDup = strtolower( $checkForDup );
+        $checkForDup = $setLabel .'-'. trim($checkForDup).'.json';
+        $parse = parse_url($link);
+        $_SESSION['fsite'] = $host = explode('.', $parse['host'])[1];
 
-    if(!empty($link)) {  
+        /*Check for post exist*/
+        // if(!empty($title)) {
+            
+        //     $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host.'/';
+        //     $files1 = array_diff(scandir($upload_path), array('..', '.'));
+        //     foreach ($files1 as $key => $fd) {
+        //         $ch = explode('_', $fd);
+        //         if($ch[1] == $checkForDup) {
+        //             echo 'found';
+        //             die;
+        //             $current = date("Y-m-d");
+        //             $date = date ("Y-m-d", filemtime($upload_path.$fd));
+        //             if($current == $date) {
+        //                 continue;
+        //             } else {
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+        /*End Check for post exist*/
         $vdoList = array();      
         $numid = explode('-video-', $link);        
         $p = file_get_html($link);
@@ -78,15 +105,20 @@ foreach ($html->find('.video-item') as $e) {
         $file_name = preg_replace("/[^a-zA-Z0-9]+/", " ", trim($title));
         $file_name = preg_replace('/\s+/', '-', $file_name);
         $file_name = strtolower( $file_name );
-        $parse = parse_url($link);
-        $_SESSION['fsite'] = $host = explode('.', $parse['host'])[1];
         if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host)) {
             mkdir(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host, 0700);
         }
         $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host.'/';
-        $file_name = trim($file_name).'.json';
-        if(file_exists($upload_path.$file_name)) {
+        if(file_exists($upload_path.$checkForDup)) {
             echo 'exist<br/>';
+            $current = date("Y-m-d");
+            $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
+            if($current == $date) {
+                continue;
+            } else {
+                break;
+            }
+            die;
         } else {
             /*search list from google*/
             $url = "https://www.google.com/search?q=".preg_replace('/\s+/', '+', trim($title));
@@ -106,9 +138,8 @@ foreach ($html->find('.video-item') as $e) {
                     $srel = $my_array_of_vars['q'];
                     echo $re->href.'<br/>';
                     parse_str( parse_url( $srel, PHP_URL_QUERY ), $my_vars );
-                    $rel = $my_vars['u'];
+                    $rel = @$my_vars['u'];
                     if(!preg_match('/'.$host.'/', $rel) && !preg_match('/google/', $rel) && !preg_match('/youtube/', $rel) ) {
-                        echo $rel.'<br/>';
                         $arrContextOptions=array(
                             "ssl"=>array(
                                 "verify_peer"=>false,
@@ -119,7 +150,7 @@ foreach ($html->find('.video-item') as $e) {
                         if (preg_match('/og:image/', $listA)) {
                             $thumbIn = $listA->find('meta[property=og:image]', 0)->content;
                         }
-                        $list = $site->getsitecontent($listA);
+                        $listv = $site->getsitecontent($listA);
                         //echo $rel.' thumb: '.$thumbIn.'<br/>';
                         break;
                     }
@@ -128,19 +159,18 @@ foreach ($html->find('.video-item') as $e) {
                 }
             }
             /*End search list from google*/
-
             /*get all video from link*/
             if(!empty($numid[1])) {
                 for ($n=0; $n < intval($part); $n++) {
                     $setNum = $n+1; 
                     $glink = $sp[$n];
-                    if(intval($part) <=count(@$list) && end($sp) != $sp[$n]) {
+                    if(intval($part) <=count(@$listv) && end($sp) != $sp[$n]) {
                         $vdoList[$setNum] = array(
-                            'list'  => $list[($n+1)]['list'],
-                            'vtype' => $list[($n+1)]['vtype']
+                            'list'  => $listv[($n+1)]['list'],
+                            'vtype' => $listv[($n+1)]['vtype']
                         );
                     }
-                    if(intval($part)>count(@$list)) {
+                    if(intval($part)>count(@$listv)) {
                         $arrContextOptions=array(
                             "ssl"=>array(
                                 "verify_peer"=>false,
@@ -171,40 +201,98 @@ foreach ($html->find('.video-item') as $e) {
                     );
                 }
             }
+            if (empty($viddata)) {
+                echo 'no vdoList';
+                die;
+            }
             $thumbIn = (!empty($thumbIn) ? $thumbIn : $thumb);
+            $thumbIn = $site->resize_image($thumbIn,0);
             $str = time();
             $str = md5($str);
-            $uniq_id = substr($str, 0, 9);
-            $title = trim($title) . ' id ' . $uniq_id;
-            $data_vdo = array(
-                'title'     => trim($title) . ' || part ' . '[ '.@count($viddata).' ]',
-                'type'     => 'vdolist',
-                'object_id' => $log_id,
-                'image'     => $thumbIn,
-                'label'     => @$New_label,
-                'list'     => @$viddata,
-                'pid'     => @$uniq_id,
-            );
-            var_dump($data_vdo);die;
-            // $post_data = array(
-            //     'title'     => trim($title),
+            $uniq_id = substr($str, 0, 9);            
+            // $data_vdo = array(
+            //     'title'     => trim($title) . ' || part ' . '[ '.@count($viddata).' ]',
             //     'type'     => 'vdolist',
             //     'object_id' => $log_id,
-            //     'pid' => $list["pid"],
-            //     'image' => array(
-            //         'url'=>@$img,
-            //         'upload_status'=>false
-            //     ),
-            //     'label'     => @$Cates,
-            //     'list'     => $list,
-            //     'file_name'     => $_SESSION['file_name'],
-            //     'link'     => $link,
-            //     'page'     => $_GET['page'],
+            //     'image'     => $thumbIn,
+            //     'label'     => @$New_label,
+            //     'list'     => @$viddata,
+            //     'pid'     => @$uniq_id,
             // );
+            // $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+            // $file_name = 'post.json';
             // $file = new file();
-            // $csv = $file->json($upload_path,$file_name, $post_data);
-            // $file = new file();
-            // $csv = $file->json($upload_path,$file_name, $post_data);
+            // $csv = $file->json($upload_path,$file_name, $data_vdo);
+            // header('Location: ' . base_url . '/blogger/post.php?do=add');
+
+            $jsonTxt = dirname(__FILE__) . '/../uploads/files/blogs/blogid.csv';
+            $file = new file();
+            $getBlogId = $file->getFileContent($jsonTxt);
+            $bidArr = [];
+            foreach ($getBlogId as $value){
+                $i++;
+                $bidArr[] = array('bid'=> trim(str_replace('﻿', '', $value->bid)),'status'=>0); 
+            }
+            $label_add      = addslashes(@$New_label);
+
+            /*save file to local*/
+            $file_name = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
+            $file_name = preg_replace('/\s+/', '-', $file_name);
+            $file_name = strtolower( $file_name );
+
+            if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host)) {
+                mkdir(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host, 0700);
+            }
+            $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host.'/';
+            $file_name = $setLabel .'-'. trim($file_name).'.json';
+            $_SESSION['file_name'] = trim($file_name);
+            $title = trim($title) . ' id ' . $uniq_id;
+            $title = trim($title) . ' || part ' . '[ '.@count($viddata).' ]';
+            $post_data = array(
+                'title'     => trim($title),
+                'type'     => 'vdolist',
+                'object_id' => $log_id,
+                'pid' => $uniq_id,
+                'image' => array(
+                    'url'=>@$thumbIn,
+                    'upload_status'=>false
+                ),
+                'label'     => @$Cates,
+                'list'     => @$viddata,
+                'file_name'     => $_SESSION['file_name'],
+                'link'     => $link,
+            );
+            $file = new file();
+            $csv = $file->json($upload_path,$file_name, $post_data);
+            /*End save file to local*/
+
+            /*create file to post*/
+            $bodytext = $site->Playlist($viddata,$title, $thumbIn);
+            $breaks          = array("\r\n", "\n", "\r");
+            $bodytext_normal = str_replace($breaks, "", $bodytext);
+            $addOnBody       = '<a href="' . $thumb . '" target="_blank"><img border="0" id="noi" src="' . $thumb . '" /></a><!--more--><meta property="og:image" content="' . $thumb . '"/><link href="' . $thumb . '" rel="image_src"/>';
+            $bodytext        = str_replace($breaks, "", $bodytext);
+            $bodytext_normal = $bodytext;
+            $bodytext = $addOnBody . $bodytext;
+            $dataPost = array(
+                'blogid' => $bidArr,
+                'title' => $title,
+                'image' => $thumbIn,
+                'body' => $bodytext,
+                'label' => $Cates,
+                'uniq_id' => $uniq_id,
+            );
+            $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+            $file_name = 'post-action.json';
+            $jsonPost = $file->json($upload_path,$file_name, $dataPost);
+            if($jsonPost) {
+                header('Location: ' . base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post'));
+                //header('Location: ' . base_url . 'blogger/post.php?do=post');
+            }
+            die;
+            
+            
+            /*End create file to post*/
         }
     }
     if($i==0) {

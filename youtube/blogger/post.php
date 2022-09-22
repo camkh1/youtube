@@ -13,13 +13,14 @@ $file = new file();
 $getPost = $file->getFileContent($upload_path.$file_name);
 $jsonTxt = dirname(__FILE__) . '/../uploads/files/blogs/blogid.csv';
 $getBlogId = $file->getFileContent($jsonTxt);
-
+unset($_SESSION['back']);
 $blogger = new blogger();
 //$post = $blogger->MoviePost($getBlogId,$getPost);
 
     if (!empty($_POST['submit'])) {
         $idblog    = @$_POST['idblog'];
         $thumb     = @$_POST['imageid'];
+        $uniq_id     = @$_POST['pid'];
         $videotype = @$_POST['videotype'];
         $title     = @$_POST['title'];
         $bodytext     = @$_POST['onyoutbueBody1'];
@@ -45,6 +46,7 @@ $blogger = new blogger();
             'image' => $thumb,
             'body' => $bodytext,
             'label' => $label_add,
+            'uniq_id' => $uniq_id,
         );
         $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
         $file_name = 'post-action.json';
@@ -63,6 +65,7 @@ $blogger = new blogger();
         $json = json_decode($str);
         $response = array();
         $posts = array();
+        $g_bid = @$_GET['pid'];
         if(!empty($id)) { 
             /*Update*/
             $bidArr = [];
@@ -97,13 +100,15 @@ $blogger = new blogger();
                         mkdir(dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'], 0700);
                     }
                     $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/';
-                    if($i==1) {
+                    if(empty($g_bid)) {
+                        $getp_id = $getpost;
                         $_SESSION['post_id'] = $getpost;
-                        $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "a");
+                        $handle = fopen($uploadPath.$getpost.'_'.$json->uniq_id.'.csv', "w");
                         fputcsv($handle, array($bids->bid,$getpost));
                         fclose($handle);
                     } else {
-                        $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "a");
+                        $getp_id = $g_bid;
+                        $handle = fopen($uploadPath.$_SESSION['post_id'].'_'.$json->uniq_id.'.csv', "a");
                         fputcsv($handle, array($bids->bid,$getpost));
                         fclose($handle);
                     }
@@ -131,12 +136,13 @@ $blogger = new blogger();
                 'image' => $json->image,
                 'body' => $json->body,
                 'label' => $json->label,
+                'uniq_id' => $json->uniq_id,
             );
             $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
             if(!empty($postNext)) {               
-                echo '<script type="text/javascript">window.setTimeout( function(){window.location = "' . base_url . 'blogger/post.php?do=post&id=' . $postNext . '";}, 300 );</script>';
+                echo '<script type="text/javascript">window.setTimeout( function(){window.location = "' . base_url . 'blogger/post.php?do=post&id=' . $postNext . '&pid='.$_SESSION['post_id'].'";}, 300 );</script>';
                 exit();
             }
             if(1 == count($countPosted)) {
@@ -231,6 +237,7 @@ if(!empty($_GET['do']) && $_GET['do'] == 'post' && empty($_GET['id'])) {
                                     </div>
                                     <div class="col-md-5">
                                         <input type="text" class="form-control" name="imageid" id="imageid" value="<?php echo @$getPost->image?>" />
+                                        <input type="hidden" class="form-control" name="pid" id="pid" value="<?php echo @$getPost->pid?>" />
                                     </div>
                                     <div class="col-md-5">
                                         <img src="<?php echo @$getPost->image?>" />                                     
