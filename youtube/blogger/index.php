@@ -294,6 +294,7 @@ $category = $data->feed->category;
                                                 }
                                             }
                                             $arr   = explode('-', $value->id->{'$t'});
+                                            $bid   = $arr[1];
                                             $pid   = $arr[2];
                                             //$img = $blogger->resize_image($value->{'media$thumbnail'}->url,'72-c');
                                             $img = @$value->{'media$thumbnail'}->url;
@@ -305,6 +306,7 @@ $category = $data->feed->category;
                                                 <a href="<?php echo @$link;?>" target="_blank"><img src="<?php
                                                  echo $img;?>" style="float: left;max-width: 72px" class="img-rounded" />&nbsp;<?php echo @$value->title->{'$t'};?>
                                             </a>
+                                            <?php echo @$bid;?>
                                             </td>
                                             <td class=" "><?php echo implode(' ', $labelLink);?></td>
                                             <td class=" "><?php echo $status;?></td>
