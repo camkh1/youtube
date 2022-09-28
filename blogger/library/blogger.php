@@ -127,91 +127,6 @@ class blogger extends file {
                     );
                 }
             }
-        } else if (preg_match('/data-vid/', $content)) {
-            $i     = 0;
-            $code  = trim(@$content->find('#listVideo li', 0)->innertext);
-            $code1 = trim(@$content->find('#vList li', 0)->innertext);
-            $code2 = trim(@$content->find('#smart li', 0)->innertext);
-            if (!empty($code)) {
-                $code_id = @$content->find('#listVideo li');
-            } else if ($code1) {
-                $code_id = @$content->find('#vList li');
-            } else if ($code2) {
-                $code_id = @$content->find('#smart li');
-            }
-            foreach ($code_id as $e) {
-                $i++;
-                $vid         = $e->attr['data-vid'];
-                $vid         = trim($vid);
-                $type        = 'docs.google';
-                $source_type = '';
-                if (empty($source_type)) {
-                    if (strlen($vid) >= 6 && strlen($vid) <= 7) {
-                        $source_type = 'd';
-                    } else if (strlen($vid) == 11) {
-                        $source_type = 'y';
-                    } else if (strlen($vid) >= 8 && strlen($vid) < 10) {
-                        $source_type = 'v';
-                    } else if (strlen($vid) == 28) {
-                        $source_type = 'g';
-                    } else if (strlen($vid) >= 3 && strlen($vid) < 6) {
-                        $source_type = 'vid';
-                    } else {
-                        $source_type = 'f';
-                    }
-                }
-
-                switch ($source_type) {
-                    case 'v':
-                        $type = 'vimeo';
-                        if (!empty($videotype)) {
-                            $v_id = 'http://player.vimeo.com/video/' . $vid;
-                        } else {
-                            $v_id = $vid;
-                        }
-                        break;
-                    case 'y':
-                        $type = 'yt';
-                        if (!empty($videotype)) {
-                            $v_id = 'http://www.youtube-nocookie.com/embed/' . $vid;
-                        } else {
-                            $v_id = $vid;
-                        }
-                        break;
-                    case 'g':
-                        $type = 'docs.google';
-                        if (!empty($videotype)) {
-                            $v_id = 'http://docs.google.com/file/d/' . $vid . '/preview';
-                        } else {
-                            $v_id = $vid;
-                        }
-                        break;
-                    case 'd':
-                        $type = 'dailymotion';
-                        if (!empty($videotype)) {
-                            $v_id = 'http://www.dailymotion.com/embed/video/' . $vid . '?autoPlay=0&hideInfos=0';
-                        } else {
-                            $v_id = $vid;
-                        }
-                        break;
-                    case 'vid':
-                        $type = 'iframe';
-                        if (!empty($videotype)) {
-                            $v_id = 'https://vid.me/e/' . $vid;
-                        } else {
-                            $v_id = 'https://vid.me/e/' . $vid;
-                        }
-                        break;
-                    case 'f':
-                        $type = 'iframe';
-                        $v_id = $vid;
-                        break;
-                }
-                $list_id[$i] = array(
-                    'list'  => $v_id,
-                    'vtype' => $type,
-                );
-            }
         } else if (preg_match('/\/p\/player.html/', $content)) {
             $strs = <<<HTML
 '.$content.'
@@ -424,6 +339,91 @@ HTML;
                 $list_id[$part] = array(
                     'list'  => $v_id,
                     'vtype' => $v_type,
+                );
+            }
+        } else if (preg_match('/data-vid/', $content)) {
+            $i     = 0;
+            $code  = trim(@$content->find('#listVideo li', 0)->innertext);
+            $code1 = trim(@$content->find('#vList li', 0)->innertext);
+            $code2 = trim(@$content->find('#smart li', 0)->innertext);
+            if (!empty($code)) {
+                $code_id = @$content->find('#listVideo li');
+            } else if ($code1) {
+                $code_id = @$content->find('#vList li');
+            } else if ($code2) {
+                $code_id = @$content->find('#smart li');
+            }
+            foreach ($code_id as $e) {
+                $i++;
+                $vid         = $e->attr['data-vid'];
+                $vid         = trim($vid);
+                $type        = 'docs.google';
+                $source_type = '';
+                if (empty($source_type)) {
+                    if (strlen($vid) >= 6 && strlen($vid) <= 7) {
+                        $source_type = 'd';
+                    } else if (strlen($vid) == 11) {
+                        $source_type = 'y';
+                    } else if (strlen($vid) >= 8 && strlen($vid) < 10) {
+                        $source_type = 'v';
+                    } else if (strlen($vid) == 28) {
+                        $source_type = 'g';
+                    } else if (strlen($vid) >= 3 && strlen($vid) < 6) {
+                        $source_type = 'vid';
+                    } else {
+                        $source_type = 'f';
+                    }
+                }
+
+                switch ($source_type) {
+                    case 'v':
+                        $type = 'vimeo';
+                        if (!empty($videotype)) {
+                            $v_id = 'http://player.vimeo.com/video/' . $vid;
+                        } else {
+                            $v_id = $vid;
+                        }
+                        break;
+                    case 'y':
+                        $type = 'yt';
+                        if (!empty($videotype)) {
+                            $v_id = 'http://www.youtube-nocookie.com/embed/' . $vid;
+                        } else {
+                            $v_id = $vid;
+                        }
+                        break;
+                    case 'g':
+                        $type = 'docs.google';
+                        if (!empty($videotype)) {
+                            $v_id = 'http://docs.google.com/file/d/' . $vid . '/preview';
+                        } else {
+                            $v_id = $vid;
+                        }
+                        break;
+                    case 'd':
+                        $type = 'dailymotion';
+                        if (!empty($videotype)) {
+                            $v_id = 'http://www.dailymotion.com/embed/video/' . $vid . '?autoPlay=0&hideInfos=0';
+                        } else {
+                            $v_id = $vid;
+                        }
+                        break;
+                    case 'vid':
+                        $type = 'iframe';
+                        if (!empty($videotype)) {
+                            $v_id = 'https://vid.me/e/' . $vid;
+                        } else {
+                            $v_id = 'https://vid.me/e/' . $vid;
+                        }
+                        break;
+                    case 'f':
+                        $type = 'iframe';
+                        $v_id = $vid;
+                        break;
+                }
+                $list_id[$i] = array(
+                    'list'  => $v_id,
+                    'vtype' => $type,
                 );
             }
         } else if (preg_match('/spoiler/', $content)) {

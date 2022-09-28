@@ -26,6 +26,7 @@ define("base_url", "http://localhost/youtube/youtube/");
 define("default_blog", "7271011833334695575");
 //define("get_post_blog", "4548242398775875765");
 define("get_post_blog", "4900901770956221335");
+define("get_from_feed", "https://www.video4khmer36.com/latest-new-khmer-movies-videos-1.html");
 define('BITLY_USERNAME', 'o_19ln460ta4');
 define('BITLY_API_KEY', 'R_d25cf36a6098484cbdec62de87af48e9');
 //for current url
