@@ -916,13 +916,13 @@ HTML;
             case 'china':
                 if($LabelType == 'Drama') {
                     if($LabelStatus == 'Continue') {
-                        $Cates = 'Movies, chinese movies, Series Movie, Chinese Continue, AD1';
+                        $Cates = 'Movies, chinese movies, Series Movie, Chinese Continue, withads';
                     } else {
-                       $Cates = 'Movies, chinese movies, Series Movies, Series Chinese, AD1'; 
+                       $Cates = 'Movies, chinese movies, Series Movies, Series Chinese, withads'; 
                     }
                     
                 } else {
-                    $Cates = 'Movies, chinese movies, Short Movies, Short Chinese, AD1';
+                    $Cates = 'Movies, chinese movies, Short Movies, Short Chinese, withads';
                 }
                 break;
             case 'thai':
@@ -940,13 +940,13 @@ HTML;
             case 'Korea':
                 if($LabelType == 'Drama') {
                     if($LabelStatus == 'Continue') {
-                        $Cates = 'Movies, Korean - Khmer Movies, Series Movies, Series Korean, Continue,Korean Continue, AD1';
+                        $Cates = 'Movies, Korean - Khmer Movies, Series Movies, Series Korean, Continue,Korean Continue, withads';
                     } else {
                        $Cates = 'Movies, Thai - Khmer, Series Movies, Series Thai, withads'; 
                     }
                     
                 } else {
-                    $Cates = 'Movies, Korean Movies, Short Movies, Short Korean, AD1';
+                    $Cates = 'Movies, Korean Movies, Short Movies, Short Korean, withads';
                 }
                 break;
             case 'khmer':
@@ -954,11 +954,11 @@ HTML;
                     if($LabelStatus == 'Continue') {
                         $Cates = 'Movies, Khmer Movie, Series Movies, Khmer Continue, Continue,withads';
                     } else {
-                       $Cates = 'Movies, Khmer Movie, Series Movies, Khmer Series, AD1'; 
+                       $Cates = 'Movies, Khmer Movie, Series Movies, Khmer Series, withads'; 
                     }
                     
                 } else {
-                    $Cates = 'Movies, khmer Movie, Short Movies, Khmer Short, AD1';
+                    $Cates = 'Movies, khmer Movie, Short Movies, Khmer Short, withads';
                 }
                 break;
             case 'India':
@@ -982,19 +982,19 @@ HTML;
                     }
                     
                 } else {
-                    $Cates = 'Hongkong Movies,Movies, chinese movies, Short Movies, Short Chinese, AD1';
+                    $Cates = 'Hongkong Movies,Movies, chinese movies, Short Movies, Short Chinese, withads';
                 }
                 break;
             case 'Taiwan':
                 if($LabelType == 'Drama') {
                     if($LabelStatus == 'Continue') {
-                        $Cates = 'Movies, chinese movies, Series Movie, Chinese Continue,Taiwan, AD1';
+                        $Cates = 'Movies, chinese movies, Series Movie, Chinese Continue,Taiwan, withads';
                     } else {
-                       $Cates = 'Taiwan,Movies, chinese movies, Series Movies, Series Chinese, AD1'; 
+                       $Cates = 'Taiwan,Movies, chinese movies, Series Movies, Series Chinese, withads'; 
                     }
                     
                 } else {
-                    $Cates = 'Taiwan,Movies, chinese movies, Short Movies, Short Chinese, AD1';
+                    $Cates = 'Taiwan,Movies, chinese movies, Short Movies, Short Chinese, withads';
                 }
                 break;
             default:
@@ -1041,6 +1041,53 @@ HTML;
                       $list .= '{"vid": "' . $value->vid . '","t": "' . $vType . '","title": "' . $title . '","image": "'.$thumb.'"},';
                     } else {
                       $list .= '{"vid": "' . $value->vid . '","t": "' . $vType . '"},';
+                    }
+                }
+            }
+            $list .='];Videoplayer(list);</script>';
+            return $list;
+        } else {
+            return false;
+        }        
+    }
+    public function Playlist($param, $title, $thumb = '')
+    {
+
+        if(!empty($param)) {
+            $list = '<script>var list = [';
+            $last_key = count($param);
+            foreach ($param as $key => $value) {
+              switch ($value['vtype']) {
+                case 'vimeo':
+                  $vType = 'vi';
+                  break;
+                case 'docs.google':
+                  $vType = 'gd';
+                  break;
+                case 'dailymotion':
+                  $vType = 'dm';
+                  break;
+                case 'yt':
+                  $vType = 'yt';
+                  break;
+                case 'fbvid':
+                  $vType = 'fb';
+                  break;
+                case 'ok':
+                  $vType = 'ok';
+                  break;
+                default:
+                  $vType = 'if';
+                  break;
+              }
+              $vid = $value['vid'];
+                if ($key == $last_key) {
+                    $list .= '{"vid": "' . $vid . '","t": "' . $vType . '"}';
+                } else {
+                    if($key == 0) {
+                      $list .= '{"vid": "' . $vid . '","t": "' . $vType . '","title": "' . $title . '","image": "'.$thumb.'"},';
+                    } else {
+                      $list .= '{"vid": "' . $vid . '","t": "' . $vType . '"},';
                     }
                 }
             }

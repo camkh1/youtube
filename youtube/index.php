@@ -9,7 +9,9 @@ if (!empty($_SESSION['tokenSessionKey'])) {
 } else {
     header('Location: ' . base_url .'login.php?back=' . urlencode($CURRENT_URL));
 }
-
+if(!empty($_SESSION['back'])) {
+    header('Location: ' . $_SESSION['back'];
+}
 if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
   unset($_SESSION['ch']);
   unset($_SESSION['blogID']);
