@@ -329,12 +329,12 @@ foreach ($html->find('.video-item') as $e) {
                 if(!empty($vdoInfo->bid)) {
                     // header('Location: ' . base_url . '/blogger/edit.php?id='.$vdoInfo->bid); 
                     // die;
-                    echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.base_url . '/blogger/edit.php?id='.$vdoInfo->bid.'";}, 30 );</script>';
+                    echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.urlencode(base_url . '/blogger/edit.php?id='.$vdoInfo->bid).'";}, 30 );</script>';
                     exit();
                 } else {
                     // header('Location: ' . base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post'));
                     // die;
-                    echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post";}, 30 );</script>';
+                    echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post.'.).'";}, 30 );</script>';
                     exit();
                 }   
             }
@@ -344,7 +344,7 @@ foreach ($html->find('.video-item') as $e) {
             $csv = $file->json($upload_path,$file_post, $post_data);
             if($jsonPost) {
                 //header('Location: ' . base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post'));
-                echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post";}, 30 );</script>';
+                echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.urlencode(base_url . 'blogger/post.php?do=post.'.).'";}, 30 );</script>';
                 exit();
                 //header('Location: ' . base_url . 'blogger/post.php?do=post');
             }
