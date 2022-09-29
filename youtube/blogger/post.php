@@ -101,14 +101,37 @@ $blogger = new blogger();
                     }
                     $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/';
                     if(empty($g_bid)) {
-                        $getp_id = $getpost;
-                        $_SESSION['post_id'] = $getpost;
-                        $handle = fopen($uploadPath.$getpost.'_'.$json->uniq_id.'.csv', "w");
-                        fputcsv($handle, array($bids->bid,$getpost));
-                        fclose($handle);
+                        if(!empty($getpost)) {
+                            $getp_id = $getpost;
+                            $_SESSION['post_id'] = $getpost;
+                            $handle = fopen($uploadPath.$getpost.'.csv', "w");
+                            fputcsv($handle, array($bids->bid,$getpost));
+                            fclose($handle);
+
+                            /*update file*/
+                            $vdoInfo = $file->getFileContent($_SESSION['postFile'],'json');
+                            $post_data = array(
+                                'title'     => $vdoInfo->title,
+                                'type'     => 'vdolist',
+                                'object_id' => $vdoInfo->object_id,
+                                'pid' => $vdoInfo->pid,
+                                'image' => array(
+                                    'url'=>@$vdoInfo->image->url,
+                                    'upload_status'=>@$vdoInfo->image->upload_status
+                                ),
+                                'label'     => $vdoInfo->label,
+                                'list'     => $vdoInfo->list,
+                                'file_name'     => $vdoInfo->file_name,
+                                'link'     => $vdoInfo->link,
+                                'bid'     => $getpost,
+                            );
+                            $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$_SESSION['fsite'].'/';
+                            $csv = $file->json($upload_path,$vdoInfo->file_name, $post_data,'update');
+                            /*End update file*/
+                        }
                     } else {
                         $getp_id = $g_bid;
-                        $handle = fopen($uploadPath.$_SESSION['post_id'].'_'.$json->uniq_id.'.csv', "a");
+                        $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "a");
                         fputcsv($handle, array($bids->bid,$getpost));
                         fclose($handle);
                     }
@@ -141,8 +164,8 @@ $blogger = new blogger();
             $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
-            if(!empty($postNext)) {               
-                echo '<script type="text/javascript">window.setTimeout( function(){window.location = "' . base_url . 'blogger/post.php?do=post&id=' . $postNext . '&pid='.$_SESSION['post_id'].'";}, 300 );</script>';
+            if(!empty($postNext)) {              
+                echo '<script type="text/javascript">window.setTimeout( function(){window.location = "' . base_url . 'blogger/post.php?do=post&id=' . $postNext . '&pid='.$_SESSION['post_id'].'";}, 1000*5 );</script>';
                 exit();
             }
             if(1 == count($countPosted)) {

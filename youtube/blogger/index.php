@@ -1,11 +1,13 @@
 <?php
 include dirname(__FILE__) .'/../top.php';
-if (empty($_SESSION['tokenSessionKey'])) {
+if (!empty($_SESSION['tokenSessionKey'])) {
     $client = new Google_Client();
     $client->setAccessToken($_SESSION['tokenSessionKey']);
-    if(!$client->isAccessTokenExpired()){
+    if($client->isAccessTokenExpired()){
         header('Location: ' . base_url .'login.php?back=' . urlencode($CURRENT_URL));
     }
+} else {
+    header('Location: ' . base_url .'login.php?back=' . urlencode($CURRENT_URL));
 }
 include dirname(__FILE__) .'/../library/blogger.php';
 if(empty($_GET['search'])){
