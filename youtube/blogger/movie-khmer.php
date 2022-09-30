@@ -274,8 +274,6 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
-        var_dump($vdoList);
-        die;
         if (!empty($vdoList)) {
             $i = 0;
             $viddata=[];
