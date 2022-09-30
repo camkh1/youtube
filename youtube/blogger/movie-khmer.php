@@ -127,6 +127,7 @@ foreach ($html->find('.video-item') as $e) {
 
             $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
             $uniq_id = $vdoInfo->pid;
+            $bid = $vdoInfo->bid;
             /*get all video from link*/
             if(!empty($numid[1])) {
                 $arrContextOptions=array(
@@ -276,6 +277,7 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
+        echo $bid;
         die;
         if (!empty($vdoList)) {
             $i = 0;
