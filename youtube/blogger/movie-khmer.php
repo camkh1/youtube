@@ -274,7 +274,6 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
-        var_dump($vdoList);
         if (!empty($vdoList)) {
             $i = 0;
             $viddata=[];
@@ -301,8 +300,6 @@ foreach ($html->find('.video-item') as $e) {
             echo 'no vdoList';
             die;
         }
-        echo '<br/>vdoList<br/>';
-        var_dump($vdoList);
         $thumbIn = (!empty($thumbIn) ? $thumbIn : $thumb);
         $thumbIn = $site->resize_image($thumbIn,0);
         if(empty($uniq_id)) {
@@ -364,9 +361,7 @@ foreach ($html->find('.video-item') as $e) {
                 'link'     => $link,
             );
         }
-        
-        echo '<br/><br/>data post<br/>';
-        var_dump($post_data);      
+           
         /*End save file to local*/
 
         /*create file to post*/
@@ -394,9 +389,8 @@ foreach ($html->find('.video-item') as $e) {
             echo $checkForDup;
             $csv = $file->json($upload_path,$file_post, $post_data);
             if($csv) {
-                echo $vdoInfo->bid;
-    die;
                 if(!empty($vdoInfo->bid)) {
+                    $_SESSION['id_edit'] = $vdoInfo->bid;
                     // header('Location: ' . base_url . '/blogger/edit.php?id='.$vdoInfo->bid); 
                     // die;
                     $back = urlencode(base_url . '/blogger/edit.php?id='.$vdoInfo->bid);
