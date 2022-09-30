@@ -284,6 +284,11 @@ foreach ($html->find('.video-item') as $e) {
                 } else {
                     $v_type = $value['vtype'];
                 }
+                if(empty($value['vid'])) {
+                    echo '<script language="javascript" type="text/javascript">location.reload();</script>';
+                    exit();
+                    break;
+                }
                 $viddata[] = array(
                     'vid' => $value['vid'],
                     'part' => $i,
@@ -326,20 +331,39 @@ foreach ($html->find('.video-item') as $e) {
         $_SESSION['file_name'] = trim($file_name);
         $title = trim($title) . ' id ' . $uniq_id;
         $title = trim($title) . ' || part ' . '[ '.@count($viddata).' ]';
-        $post_data = array(
-            'title'     => trim($title),
-            'type'     => 'vdolist',
-            'object_id' => $log_id,
-            'pid' => $uniq_id,
-            'image' => array(
-                'url'=>@$thumbIn,
-                'upload_status'=>false
-            ),
-            'label'     => @$Cates,
-            'list'     => @$viddata,
-            'file_name'     => $_SESSION['file_name'],
-            'link'     => $link,
-        );
+        if(!empty($vdoInfo)) {
+            $post_data = array(
+                'title'     => $vdoInfo->title,
+                'type'     => 'vdolist',
+                'object_id' => $vdoInfo->object_id,
+                'pid' => $vdoInfo->pid,
+                'image' => array(
+                    'url'=>@$vdoInfo->image->url,
+                    'upload_status'=>$vdoInfo->image->upload_status
+                ),
+                'label'     => @$Cates,
+                'list'     => @$viddata,
+                'file_name'     => $vdoInfo->file_name,
+                'link'     => @$vdoInfo->link,
+                'bid'     => @$vdoInfo->bid,
+            );
+        } else {
+            $post_data = array(
+                'title'     => trim($title),
+                'type'     => 'vdolist',
+                'object_id' => $log_id,
+                'pid' => $uniq_id,
+                'image' => array(
+                    'url'=>@$thumbIn,
+                    'upload_status'=>false
+                ),
+                'label'     => @$Cates,
+                'list'     => @$viddata,
+                'file_name'     => $_SESSION['file_name'],
+                'link'     => $link,
+            );
+        }
+        
         echo '<br/><br/>data post<br/>';
         var_dump($post_data);      
         /*End save file to local*/
