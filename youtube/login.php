@@ -42,7 +42,9 @@ if (isset($_GET['code'])) {
     $ticket = $client->verifyIdToken();
     if ($ticket) {
       $data = $ticket->getAttributes();
+      $email = $data->email;
       $_SESSION['user_id'] = $data['payload']['sub'];
+      $_SESSION['email'] = $email;
     }
   }
   if(!empty($_GET['back'])) {
@@ -68,6 +70,14 @@ if(!empty($_GET['renew'])) {
     $client->setState($state);
     $_SESSION['state'] = $state;
     $authUrl = $client->createAuthUrl();
+    $client->setAccessToken($_SESSION[$tokenSessionKey]);
+    $ticket = $client->verifyIdToken();
+    if ($ticket) {
+      $data = $ticket->getAttributes();
+      $email = $data->email;
+      $_SESSION['user_id'] = $data['payload']['sub'];
+      $_SESSION['email'] = $email;
+    }
     header('Location: ' . $authUrl);
 }
 if($client->isAccessTokenExpired()){

@@ -28,7 +28,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown user"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-male"></i> <span class="username">
-                         Socheat</span> <i class="icon-caret-down small"></i> </a>
+                         <?php echo !empty($_SESSION['email']) ?$_SESSION['email']: 'Not Login';?></span> <i class="icon-caret-down small"></i> </a>
                 <ul class="dropdown-menu"> 
                     <li><a href="<?php echo base_url;?>login.php"><i class="icon-key"></i> Login</a></li>
                     <li><a href="<?php echo base_url;?>login.php?renew=1"><i class="icon-key"></i> New Login</a></li>
