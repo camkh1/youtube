@@ -393,7 +393,7 @@ foreach ($html->find('.video-item') as $e) {
                     $_SESSION['id_edit'] = $vdoInfo->bid;
                     // header('Location: ' . base_url . '/blogger/edit.php?id='.$vdoInfo->bid); 
                     // die;
-                    $back = urlencode(base_url . '/blogger/edit.php?id='.$vdoInfo->bid);
+                    $back = urlencode(base_url . '/blogger/edit.php?do=post&id='.$vdoInfo->bid);
                     echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.$back.'";}, 30 );</script>';
                     exit();
                 } else {
