@@ -323,6 +323,7 @@ foreach ($html->find('.video-item') as $e) {
                 );
             }
         }
+        var_dump($arrSearch);
         $bidArr = [];
         foreach ($getBlogId as $value){
             $i++;
