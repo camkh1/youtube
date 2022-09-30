@@ -143,6 +143,7 @@ $blogger = new blogger();
                 'image' => $json->image,
                 'body' => $json->body,
                 'label' => $json->label,
+                'uniq_id' => @$json->uniq_id,
             );
             $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
             $file_name = 'post-action.json';
