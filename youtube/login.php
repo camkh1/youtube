@@ -70,6 +70,7 @@ if(!empty($_GET['renew'])) {
     $client->setState($state);
     $_SESSION['state'] = $state;
     $authUrl = $client->createAuthUrl();
+    header('Location: ' . $authUrl);
     //$client->setAccessToken($_SESSION[$tokenSessionKey]);
     $ticket = $client->verifyIdToken();
     if ($ticket) {
@@ -78,7 +79,6 @@ if(!empty($_GET['renew'])) {
       $_SESSION['user_id'] = $data['payload']['sub'];
       $_SESSION['email'] = $email;
     }
-    header('Location: ' . $authUrl);
 }
 if($client->isAccessTokenExpired()){
     $state = mt_rand();
