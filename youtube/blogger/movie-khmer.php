@@ -67,10 +67,10 @@ foreach ($html->find('.video-item') as $e) {
     $Cates = $site->getLabelBySpec($setLabel ,$LabelType, $LabelStatus);
     /*End set Label*/
     /*for test*/
-    // $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/kumnum-chheam-somnak-proel-part-32-video-1639522.html';
-    // $title = trim('KumNum Chheam SomNak Proel');
-    // $setLabel = 'china';
-    // $part = 32;
+    $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/sneah-mun-thngai-licht-hd-part-13-video-1639897.html';
+    $title = trim('Sneah Mun Thngai Licht [HD]');
+    $setLabel = 'china';
+    $part = 13;
     /*End for test*/
     if(!empty($link)) {
         $checkForDup = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
@@ -121,10 +121,15 @@ foreach ($html->find('.video-item') as $e) {
         if(file_exists($upload_path.$checkForDup)) {
             echo 'exist<br/>';
             $current = date("Y-m-d");
+
             $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
             if($current == $date) {
-                continue;
+                //continue;
+                echo 1111;
+                die;
             } else {
+                echo 2222;
+                die;
                 $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
                 $uniq_id = $vdoInfo->pid;
                 /*get all video from link*/
@@ -231,6 +236,7 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
+        die;
         if (!empty($vdoList)) {
             $i = 0;
             $viddata=[];
