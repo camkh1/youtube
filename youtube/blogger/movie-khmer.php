@@ -121,8 +121,48 @@ foreach ($html->find('.video-item') as $e) {
         if(file_exists($upload_path.$checkForDup)) {
             echo 'exist<br/>';
             $current = date("Y-m-d");
-
             $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
+
+
+
+            $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
+            $uniq_id = $vdoInfo->pid;
+            /*get all video from link*/
+            if(!empty($numid[1])) {
+                $arrContextOptions=array(
+                    "ssl"=>array(
+                        "verify_peer"=>false,
+                        "verify_peer_name"=>false,
+                    ),
+                ); 
+                for ($n=0; $n < intval($part); $n++) {
+                    $setNum = $n+1; 
+                    $glink = $sp[$n];
+                    if(intval($setNum) <=count(@$vdoInfo->list)) {
+                        if($vdoInfo->list[$n]->part == $setNum) {
+                            if(!empty($vdoInfo->list[$n]->vid)) {
+                                $vdoList[$setNum] = array(
+                                    'list'  => $vdoInfo->list[$n]->vid,
+                                    'vtype' => $vdoInfo->list[$n]->vtype
+                                );
+                            } else {
+                                //echo 'not found <br/>';
+                                $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                                $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                                $data_list = $site->get_video_id($code);
+                                $vdoList[$setNum] = $data_list;
+                            }
+                        }
+                    } else {
+                        //echo $setNum .' get mew <br/>';
+                        $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                        $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                        $data_list = $site->get_video_id($code);
+                        $vdoList[$setNum] = $data_list;
+                    }
+                }
+            }
+            /*End get all video from link*/
             if($current == $date) {
                 //continue;
                 echo 1111;
@@ -130,44 +170,44 @@ foreach ($html->find('.video-item') as $e) {
             } else {
                 echo 2222;
                 die;
-                $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
-                $uniq_id = $vdoInfo->pid;
-                /*get all video from link*/
-                if(!empty($numid[1])) {
-                    $arrContextOptions=array(
-                        "ssl"=>array(
-                            "verify_peer"=>false,
-                            "verify_peer_name"=>false,
-                        ),
-                    ); 
-                    for ($n=0; $n < intval($part); $n++) {
-                        $setNum = $n+1; 
-                        $glink = $sp[$n];
-                        if(intval($setNum) <=count(@$vdoInfo->list)) {
-                            if($vdoInfo->list[$n]->part == $setNum) {
-                                if(!empty($vdoInfo->list[$n]->vid)) {
-                                    $vdoList[$setNum] = array(
-                                        'list'  => $vdoInfo->list[$n]->vid,
-                                        'vtype' => $vdoInfo->list[$n]->vtype
-                                    );
-                                } else {
-                                    //echo 'not found <br/>';
-                                    $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
-                                    $code = $con->find('.embed-responsive-item iframe', 0)->src;
-                                    $data_list = $site->get_video_id($code);
-                                    $vdoList[$setNum] = $data_list;
-                                }
-                            }
-                        } else {
-                            //echo $setNum .' get mew <br/>';
-                            $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
-                            $code = $con->find('.embed-responsive-item iframe', 0)->src;
-                            $data_list = $site->get_video_id($code);
-                            $vdoList[$setNum] = $data_list;
-                        }
-                    }
-                }
-                /*End get all video from link*/
+                // $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
+                // $uniq_id = $vdoInfo->pid;
+                // /*get all video from link*/
+                // if(!empty($numid[1])) {
+                //     $arrContextOptions=array(
+                //         "ssl"=>array(
+                //             "verify_peer"=>false,
+                //             "verify_peer_name"=>false,
+                //         ),
+                //     ); 
+                //     for ($n=0; $n < intval($part); $n++) {
+                //         $setNum = $n+1; 
+                //         $glink = $sp[$n];
+                //         if(intval($setNum) <=count(@$vdoInfo->list)) {
+                //             if($vdoInfo->list[$n]->part == $setNum) {
+                //                 if(!empty($vdoInfo->list[$n]->vid)) {
+                //                     $vdoList[$setNum] = array(
+                //                         'list'  => $vdoInfo->list[$n]->vid,
+                //                         'vtype' => $vdoInfo->list[$n]->vtype
+                //                     );
+                //                 } else {
+                //                     //echo 'not found <br/>';
+                //                     $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                //                     $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                //                     $data_list = $site->get_video_id($code);
+                //                     $vdoList[$setNum] = $data_list;
+                //                 }
+                //             }
+                //         } else {
+                //             //echo $setNum .' get mew <br/>';
+                //             $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                //             $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                //             $data_list = $site->get_video_id($code);
+                //             $vdoList[$setNum] = $data_list;
+                //         }
+                //     }
+                // }
+                // /*End get all video from link*/
             }
         } else {
             /*search list from google*/
