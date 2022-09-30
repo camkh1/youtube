@@ -146,7 +146,6 @@ $blogger = new blogger();
             $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
-            die;
             if(!empty($postNext)) {               
                 echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/edit.php?do=post&id=' . $postNext . '";</script>';
             }
