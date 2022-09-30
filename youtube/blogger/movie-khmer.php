@@ -316,6 +316,8 @@ foreach ($html->find('.video-item') as $e) {
             $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/' . $_SESSION['id_edit'].'.csv';
             $getEditBlogId = $file->getFileContent($blogEdit);
             foreach ($getEditBlogId as $values) {
+                var_dump($values);
+                echo '<br/>';
                 $gpid = @$values->bname;
                 $arrSearch[] = array(
                     'bid' =>@$values->bid,
