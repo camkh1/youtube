@@ -274,9 +274,6 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
-        echo $bid .'<br/>';
-        var_dump($vdoList);
-        die;
         if (!empty($vdoList)) {
             $i = 0;
             $viddata=[];
