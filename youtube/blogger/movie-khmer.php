@@ -128,6 +128,7 @@ foreach ($html->find('.video-item') as $e) {
             $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
             $uniq_id = $vdoInfo->pid;
             $bid = $vdoInfo->bid;
+            $_SESSION['id_edit'] = $vdoInfo->bid;
             /*get all video from link*/
             if(!empty($numid[1])) {
                 $arrContextOptions=array(
@@ -309,11 +310,29 @@ foreach ($html->find('.video-item') as $e) {
         }
         $jsonTxt = dirname(__FILE__) . '/../uploads/files/blogs/blogid.csv';
         $getBlogId = $file->getFileContent($jsonTxt);
+
+        $arrSearch = array(); 
+        if(!empty($_SESSION['id_edit'])) {
+            $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/' . $_SESSION['id_edit'].'.csv';
+            $getEditBlogId = $file->getFileContent($blogEdit);
+            foreach ($getEditBlogId as $values) {
+                $gpid = @$values->bname;
+                $arrSearch[] = array(
+                    'bid' =>@$values->bid,
+                    'pid'=> @$values->pid
+                );
+            }
+        }
         $bidArr = [];
         foreach ($getBlogId as $value){
             $i++;
-            $bidArr[] = array('bid'=> trim(str_replace('﻿', '', $value->bid)),'status'=>0); 
+            $bidArr[] = array(
+                'bid'=> trim(str_replace('﻿', '', $value->bid)),
+                'pid'=> searchForId($value->bid, $arrSearch);
+                'status'=>0); 
         }
+        var_dump($bidArr);
+        die;
         $label_add      = addslashes(@$New_label);
 
         /*save file to local*/
@@ -390,7 +409,6 @@ foreach ($html->find('.video-item') as $e) {
             $csv = $file->json($upload_path,$file_post, $post_data);
             if($csv) {
                 if(!empty($vdoInfo->bid)) {
-                    $_SESSION['id_edit'] = $vdoInfo->bid;
                     // header('Location: ' . base_url . '/blogger/edit.php?id='.$vdoInfo->bid); 
                     // die;
                     $back = urlencode(base_url . '/blogger/edit.php?do=post&id='.$vdoInfo->bid);
@@ -450,3 +468,13 @@ function getnext($plink,$sp)
     }
     return $sp;
 }
+function searchForId($id, $array) {
+   foreach ($array as $key => $val) {
+    $pos = strpos($val['bid'], $id);
+    if ($pos === false) {
+    } else {
+        return @$val['pid'];
+    }
+   }
+   return null;
+} 

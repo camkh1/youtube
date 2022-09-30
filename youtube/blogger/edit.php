@@ -249,6 +249,7 @@ if (!empty($_POST['idpost']) && !empty($_POST['keyword'])) {
                                     </div>
                                     <div class="col-md-10">
                                         <input type="hidden" class="form-control" name="postid" id="imageid" value="<?php echo @$_GET['id'];?>" />
+                                        <input type="hidden" class="form-control" name="uniq_id" id="uniq_id" value="<?php echo @$_GET['id'];?>" />
                                         <input type="text" class="form-control" name="title" id="title" value="<?php echo @$getPost->title?> || part <?php echo count($getPost->list);?>" />
                                     </div>                                                            
                                 </div>                         
