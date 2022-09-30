@@ -7,10 +7,10 @@ if (empty($_SESSION['tokenSessionKey'])) {
     }
 }
 include dirname(__FILE__) .'/../library/blogger.php';
+$file = new file();
 $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
 if(empty($_GET['do']) && empty($_GET['id'])) {
     $file_name = 'post.json';
-    $file = new file();
     $getPost = $file->getFileContent($upload_path.$file_name);
 }
 $jsonTxt = dirname(__FILE__) . '/../uploads/files/blogs/blogid.csv';
