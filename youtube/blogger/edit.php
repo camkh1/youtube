@@ -105,7 +105,6 @@ $blogger = new blogger();
                 if ( $bids->bid == $id ) {
                     /*post to Blog*/                    
                     $pid = $file->searchForId($bids->bid, $arrSearch);
-                    echo 'bid: '.$pid.'<br/>';
                     $dataContent          = new stdClass();
                     $dataContent->setdate = false;   
                     $dataContent->customcode = '';
@@ -124,7 +123,6 @@ $blogger = new blogger();
                         $dataContent->editpost = false;
                         $dataContent->pid      = '';
                     }
-                    var_dump($dataContent);die;
                     $getpost               = $blogger->blogger_post($client,$dataContent);
                     /*End post to Blog*/
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
