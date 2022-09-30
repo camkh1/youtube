@@ -8,9 +8,11 @@ if (empty($_SESSION['tokenSessionKey'])) {
 }
 include dirname(__FILE__) .'/../library/blogger.php';
 $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
-$file_name = 'post.json';
-$file = new file();
-$getPost = $file->getFileContent($upload_path.$file_name);
+if(empty($_GET['do']) && empty($_GET['id'])) {
+    $file_name = 'post.json';
+    $file = new file();
+    $getPost = $file->getFileContent($upload_path.$file_name);
+}
 $jsonTxt = dirname(__FILE__) . '/../uploads/files/blogs/blogid.csv';
 $getBlogId = $file->getFileContent($jsonTxt);
 unset($_SESSION['back']);
