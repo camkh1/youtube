@@ -274,6 +274,7 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
+        var_dump($vdoList);
         if (!empty($vdoList)) {
             $i = 0;
             $viddata=[];
@@ -285,7 +286,7 @@ foreach ($html->find('.video-item') as $e) {
                     $v_type = $value['vtype'];
                 }
                 if(empty($value['vid'])) {
-                    echo '<script language="javascript" type="text/javascript">location.reload();</script>';
+                    echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){location.reload()}, 5000 );</script>';
                     exit();
                     break;
                 }
