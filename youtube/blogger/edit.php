@@ -105,6 +105,7 @@ $blogger = new blogger();
                 if ( $bids->bid == $id ) {
                     /*post to Blog*/                    
                     $pid = $file->searchForId($bids->bid, $arrSearch);
+                    echo 'bid: '.$pid.'<br/>';
                     $dataContent          = new stdClass();
                     $dataContent->setdate = false;   
                     $dataContent->customcode = '';
@@ -123,6 +124,7 @@ $blogger = new blogger();
                         $dataContent->editpost = false;
                         $dataContent->pid      = '';
                     }
+                    var_dump($dataContent);die;
                     $getpost               = $blogger->blogger_post($client,$dataContent);
                     /*End post to Blog*/
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
@@ -145,6 +147,7 @@ $blogger = new blogger();
             $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
+            die;
             if(!empty($postNext)) {               
                 echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/edit.php?do=post&id=' . $postNext . '";</script>';
             }
