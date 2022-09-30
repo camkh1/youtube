@@ -143,7 +143,7 @@ foreach ($html->find('.video-item') as $e) {
                         if($vdoInfo->list[$n]->part == $setNum) {
                             if(!empty($vdoInfo->list[$n]->vid)) {
                                 $vdoList[$setNum] = array(
-                                    'list'  => $vdoInfo->list[$n]->vid,
+                                    'vid'  => $vdoInfo->list[$n]->vid,
                                     'vtype' => $vdoInfo->list[$n]->vtype
                                 );
                             } else {
@@ -185,8 +185,8 @@ foreach ($html->find('.video-item') as $e) {
                 //             if($vdoInfo->list[$n]->part == $setNum) {
                 //                 if(!empty($vdoInfo->list[$n]->vid)) {
                 //                     $vdoList[$setNum] = array(
-                //                         'list'  => $vdoInfo->list[$n]->vid,
-                //                         'vtype' => $vdoInfo->list[$n]->vtype
+                //                         'vid'  => $vdoInfo->vid[$n]->vid,
+                //                         'vtype' => $vdoInfo->vid[$n]->vtype
                 //                     );
                 //                 } else {
                 //                     //echo 'not found <br/>';
@@ -254,7 +254,7 @@ foreach ($html->find('.video-item') as $e) {
                     $glink = $sp[$n];
                     if(intval($part) <=count(@$listv) && end($sp) != $sp[$n]) {
                         $vdoList[$setNum] = array(
-                            'list'  => $listv[($n+1)]['list'],
+                            'vid'  => $listv[($n+1)]['vid'],
                             'vtype' => $listv[($n+1)]['vtype']
                         );
                     }
