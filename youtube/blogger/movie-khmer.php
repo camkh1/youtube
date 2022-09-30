@@ -166,11 +166,8 @@ foreach ($html->find('.video-item') as $e) {
             /*End get all video from link*/
             if($current == $date) {
                 //continue;
-                echo 1111;
-                die;
             } else {
-                echo 2222;
-                die;
+
                 // $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
                 // $uniq_id = $vdoInfo->pid;
                 // /*get all video from link*/
@@ -277,7 +274,8 @@ foreach ($html->find('.video-item') as $e) {
             }
             /*End create file to post*/
         }
-        echo $bid;
+        echo $bid .'<br/>';
+        var_dump($vdoList);
         die;
         if (!empty($vdoList)) {
             $i = 0;
