@@ -323,6 +323,7 @@ foreach ($html->find('.video-item') as $e) {
                 );
             }
         }
+        echo 'post id: '.$_SESSION['id_edit'];
         var_dump($arrSearch);
         $bidArr = [];
         foreach ($getBlogId as $value){
