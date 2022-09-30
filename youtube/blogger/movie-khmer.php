@@ -328,7 +328,7 @@ foreach ($html->find('.video-item') as $e) {
             $i++;
             $bidArr[] = array(
                 'bid'=> trim(str_replace('﻿', '', $value->bid)),
-                'pid'=> searchForId($value->bid, $arrSearch);
+                'pid'=> searchForId($value->bid, $arrSearch),
                 'status'=>0); 
         }
         var_dump($bidArr);
