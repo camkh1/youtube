@@ -321,7 +321,7 @@ foreach ($html->find('.video-item') as $e) {
                 $gpid = @$values->bname;
                 $arrSearch[] = array(
                     'bid' =>@$values->bid,
-                    'pid'=> @$values->pid
+                    'pid'=> @$values->bname
                 );
             }
         }
