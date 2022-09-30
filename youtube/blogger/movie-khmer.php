@@ -372,6 +372,8 @@ foreach ($html->find('.video-item') as $e) {
             echo $checkForDup;
             $csv = $file->json($upload_path,$file_post, $post_data);
             if($csv) {
+                echo $vdoInfo->bid;
+                die;
                 if(!empty($vdoInfo->bid)) {
                     // header('Location: ' . base_url . '/blogger/edit.php?id='.$vdoInfo->bid); 
                     // die;
@@ -388,6 +390,7 @@ foreach ($html->find('.video-item') as $e) {
             }
         } else {
             echo 'not ';
+            die;
             echo $checkForDup;
             $csv = $file->json($upload_path,$file_post, $post_data);
             if($jsonPost) {
