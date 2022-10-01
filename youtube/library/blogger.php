@@ -1167,7 +1167,7 @@ HTML;
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.$keyWord.'&start-index='.$start;
             $response = file_get_contents($link_blog);
             if(!empty($response)) {
-                foreach ($response->entry as $key => $entry) {
+                foreach ($response->feed->entry as $key => $entry) {
                     $id = $entry->id->{'$t'};
                 }
             }
