@@ -169,67 +169,77 @@ foreach ($html->find('.video-item') as $e) {
             }
         } else {
             /*search list from google*/
-            $url = "https://www.google.com/search?q=".preg_replace('/\s+/', '+', trim($title));
-            $options = array(
-              'http'=>array(
-                'method'=>"GET",
-                'header'=>"Accept-language: en\r\n" .
-                          "Cookie: foo=bar\r\n" .  // check function.stream-context-create on php.net
-                          "User-Agent: Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.102011-10-16 20:23:10\r\n" // i.e. An iPad 
-              )
-            );
-            $context = stream_context_create($options);
-            $s = file_get_html($url, false, $context);
-            foreach ($s->find('a') as $re) {
-                if(preg_match('/\/url\?q=/', $re->href)) {
-                    parse_str( parse_url( $re->href, PHP_URL_QUERY ), $my_array_of_vars );
-                    $srel = $my_array_of_vars['q'];
-                    echo $re->href.'<br/>';
-                    parse_str( parse_url( $srel, PHP_URL_QUERY ), $my_vars );
-                    $rel = @$my_vars['u'];
-                    if(!preg_match('/'.$host.'/', $rel) && !preg_match('/google/', $rel) && !preg_match('/youtube/', $rel) ) {
-                        $arrContextOptions=array(
-                            "ssl"=>array(
-                                "verify_peer"=>false,
-                                "verify_peer_name"=>false,
-                            ),
-                        ); 
-                        $listA = file_get_html($rel, false, stream_context_create($arrContextOptions));
-                        if (preg_match('/og:image/', $listA)) {
-                            $thumbIn = $listA->find('meta[property=og:image]', 0)->content;
-                        }
-                        $listv = $site->getsitecontent($listA);
-                        //echo $rel.' thumb: '.$thumbIn.'<br/>';
-                        break;
-                    }
+            // $url = "https://www.google.com/search?q=".preg_replace('/\s+/', '+', trim($title));
+            // $options = array(
+            //   'http'=>array(
+            //     'method'=>"GET",
+            //     'header'=>"Accept-language: en\r\n" .
+            //               "Cookie: foo=bar\r\n" .  // check function.stream-context-create on php.net
+            //               "User-Agent: Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.102011-10-16 20:23:10\r\n" // i.e. An iPad 
+            //   )
+            // );
+            // $context = stream_context_create($options);
+            // $s = file_get_html($url, false, $context);
+            // foreach ($s->find('a') as $re) {
+            //     if(preg_match('/\/url\?q=/', $re->href)) {
+            //         parse_str( parse_url( $re->href, PHP_URL_QUERY ), $my_array_of_vars );
+            //         $srel = $my_array_of_vars['q'];
+            //         echo $re->href.'<br/>';
+            //         parse_str( parse_url( $srel, PHP_URL_QUERY ), $my_vars );
+            //         $rel = @$my_vars['u'];
+            //         if(!preg_match('/'.$host.'/', $rel) && !preg_match('/google/', $rel) && !preg_match('/youtube/', $rel) ) {
+            //             $arrContextOptions=array(
+            //                 "ssl"=>array(
+            //                     "verify_peer"=>false,
+            //                     "verify_peer_name"=>false,
+            //                 ),
+            //             ); 
+            //             $listA = file_get_html($rel, false, stream_context_create($arrContextOptions));
+            //             if (preg_match('/og:image/', $listA)) {
+            //                 $thumbIn = $listA->find('meta[property=og:image]', 0)->content;
+            //             }
+            //             $listv = $site->getsitecontent($listA);
+            //             //echo $rel.' thumb: '.$thumbIn.'<br/>';
+            //             break;
+            //         }
                     
-                    //echo $re->href.'<br/>';
-                }
-            }
+            //         //echo $re->href.'<br/>';
+            //     }
+            // }
             /*End search list from google*/
             /*get all video from link*/
-            if(!empty($numid[1])) {
+            if(!empty($numid[1]) && !empty($sp)) {
                 for ($n=0; $n < intval($part); $n++) {
                     $setNum = $n+1; 
                     $glink = $sp[$n];
-                    if(intval($part) <=count(@$listv) && end($sp) != $sp[$n]) {
-                        $vdoList[$setNum] = array(
-                            'vid'  => $listv[($n+1)]['vid'],
-                            'vtype' => $listv[($n+1)]['vtype']
-                        );
-                    }
-                    if(intval($part)>count(@$listv)) {
-                        $arrContextOptions=array(
-                            "ssl"=>array(
-                                "verify_peer"=>false,
-                                "verify_peer_name"=>false,
-                            ),
-                        ); 
-                        $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
-                        $code = $con->find('.embed-responsive-item iframe', 0)->src;
-                        $data_list = $site->get_video_id($code);
-                        $vdoList[$setNum] = $data_list;
-                    }
+                    // if(intval($part) <=count(@$listv) && end($sp) != $sp[$n]) {
+                    //     $vdoList[$setNum] = array(
+                    //         'vid'  => $listv[($n+1)]['vid'],
+                    //         'vtype' => $listv[($n+1)]['vtype']
+                    //     );
+                    // }
+                    // if(intval($part)>count(@$listv)) {
+                    //     $arrContextOptions=array(
+                    //         "ssl"=>array(
+                    //             "verify_peer"=>false,
+                    //             "verify_peer_name"=>false,
+                    //         ),
+                    //     ); 
+                    //     $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                    //     $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                    //     $data_list = $site->get_video_id($code);
+                    //     $vdoList[$setNum] = $data_list;
+                    // }
+                    $arrContextOptions=array(
+                        "ssl"=>array(
+                            "verify_peer"=>false,
+                            "verify_peer_name"=>false,
+                        ),
+                    ); 
+                    $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                    $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                    $data_list = $site->get_video_id($code);
+                    $vdoList[$setNum] = $data_list;
                 }
             }
             /*End create file to post*/
