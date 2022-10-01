@@ -77,7 +77,7 @@ $blogger = new blogger();
             $totalPosts = count($json->blogid);
             $countPosted = array();
             foreach ($json->blogid as $bids) {
-                $i++;                
+                $i++;           
                 if ( $bids->bid == $id ) {
                     /*post to Blog*/
                     $dataContent          = new stdClass();
@@ -166,9 +166,17 @@ $blogger = new blogger();
             $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
-            if(!empty($postNext)) {              
-                echo '<script type="text/javascript">window.setTimeout( function(){window.location = "' . base_url . 'blogger/post.php?do=post&id=' . $postNext . '&pid='.$_SESSION['post_id'].'";}, 1000*5 );</script>';
+            if(!empty($postNext)) {
+                // if(count($countPosted) % 5 == 0 && count($countPosted)>0){
+
+                // } else {
+
+                // }   
+                $back = urlencode(base_url . 'blogger/post.php?do=post&id=' . $postNext . '&pid='.$_SESSION['post_id']);
+                echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'login.php?renew=1&back='.$back.'";}, 1000*3 );</script>';
                 exit();
+                // echo '<script type="text/javascript">window.setTimeout( function(){window.location = "' . base_url . 'blogger/post.php?do=post&id=' . $postNext . '&pid='.$_SESSION['post_id'].'";}, 1000*5 );</script>';
+                // exit();
             }
             if(1 == count($countPosted)) {
                 if(preg_match('/Continue/', $json->label)) {
