@@ -1165,7 +1165,7 @@ HTML;
             $html = json_decode($response);
         } else {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.$keyWord.'&start-index='.$start;
-            $response = file_get_contents($link_blog);
+            $response = json_decode(file_get_contents($link_blog));
             if(!empty($response)) {
                 foreach ($response->feed->entry as $key => $entry) {
                     $id = $entry->id->{'$t'};
