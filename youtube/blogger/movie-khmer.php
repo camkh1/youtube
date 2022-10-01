@@ -112,10 +112,10 @@ foreach ($html->find('.video-item') as $e) {
         $file_name = preg_replace("/[^a-zA-Z0-9]+/", " ", trim($title));
         $file_name = preg_replace('/\s+/', '-', $file_name);
         $file_name = strtolower( $file_name );
-        if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$_SESSION['fsite'])) {
-            mkdir(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$_SESSION['fsite'], 0700);
+        if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'])) {
+            mkdir(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'], 0700);
         }
-        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$_SESSION['fsite'].'/';
+        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
         echo $checkForDup .' '. $link .'<br/>';
         $_SESSION['postFile'] = $upload_path.$checkForDup;
         if(file_exists($upload_path.$checkForDup)) {
@@ -272,7 +272,7 @@ foreach ($html->find('.video-item') as $e) {
 
         $arrSearch = array(); 
         if(!empty($_SESSION['id_edit'])) {
-            $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/' . $_SESSION['id_edit'].'.csv';
+            $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/' . $_SESSION['id_edit'].'.csv';
             $getEditBlogId = $file->getFileContent($blogEdit);
             foreach ($getEditBlogId as $values) {
                 $gpid = @$values->bname;
@@ -297,10 +297,10 @@ foreach ($html->find('.video-item') as $e) {
         $file_name = preg_replace('/\s+/', '-', $file_name);
         $file_name = strtolower( $file_name );
 
-        if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host)) {
-            mkdir(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host, 0700);
+        if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$host)) {
+            mkdir(dirname(__FILE__) . '/../uploads/posts/'.$host, 0700);
         }
-        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$host.'/';
+        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$host.'/';
         $file_post = $file_name = $setLabel .'-'. trim($file_name).'.json';
         $_SESSION['file_name'] = trim($file_name);
         $title = trim($title) . ' id ' . $uniq_id;
@@ -356,10 +356,10 @@ foreach ($html->find('.video-item') as $e) {
             'label' => $Cates,
             'uniq_id' => $uniq_id,
         );
-        $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+        $upload_path = dirname(__FILE__) . '/../uploads/user/';
         $file_name = 'post-action.json';
         $jsonPost = $file->json($upload_path,$file_name, $dataPost);
-        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$_SESSION['fsite'].'/';
+        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
         if(file_exists($upload_path.$checkForDup)) {
             unlink($upload_path.$checkForDup);
             echo $checkForDup;

@@ -9,7 +9,7 @@ if (empty($_SESSION['tokenSessionKey'])) {
     }
 }
 include dirname(__FILE__) .'/../library/blogger.php';
-$upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+$upload_path = dirname(__FILE__) . '/../uploads/user/';
 $file_name = 'post.json';
 $file = new file();
 $getPost = $file->getFileContent($upload_path.$file_name);
@@ -63,7 +63,7 @@ $blogger = new blogger();
             'body' => $bodytext,
             'label' => $label_add,
         );
-        $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+        $upload_path = dirname(__FILE__) . '/../uploads/user/';
         $file_name = 'post-action.json';
         $jsonPost = $file->json($upload_path,$file_name, $dataPost);
         header('Location: ' . base_url . 'blogger/edit.php?do=post');
@@ -74,13 +74,13 @@ $blogger = new blogger();
         $blogger = new blogger();
         $client = new Google_Client();
         $client->setAccessToken($_SESSION['tokenSessionKey']);
-        $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+        $upload_path = dirname(__FILE__) . '/../uploads/user/';
         $file_name = 'post-action.json';
         $str = file_get_contents($upload_path.$file_name);
         $json = json_decode($str);
 
         /*get Edit ID post*/        
-        $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/' . $_SESSION['id_edit'].'.csv';
+        $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/' . $_SESSION['id_edit'].'.csv';
         $getEditBlogId = $file->getFileContent($blogEdit);
         $arrSearch = array(); 
         foreach ($getEditBlogId as $values) {
@@ -152,7 +152,7 @@ $blogger = new blogger();
                 'label' => $json->label,
                 'uniq_id' => @$json->uniq_id,
             );
-            $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+            $upload_path = dirname(__FILE__) . '/../uploads/user/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
             if(!empty($postNext)) {               
@@ -201,7 +201,7 @@ if(!empty($_GET['do']) && $_GET['do'] == 'post' && empty($_GET['id'])) {
 
 if (!empty($_POST['idpost']) && !empty($_POST['keyword'])) {
     /*creat for default blog*/
-    $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/';
+    $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/';
     $handle = fopen($uploadPath.$_POST['idpost'].'.csv', 'a');
     fputcsv($handle, array(default_blog,$_POST['idpost']));
     fclose($handle);

@@ -8,7 +8,7 @@ if (empty($_SESSION['tokenSessionKey'])) {
 }
 include dirname(__FILE__) .'/../library/blogger.php';
 $file = new file();
-$upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+$upload_path = dirname(__FILE__) . '/../uploads/user/';
 if(empty($_GET['do']) && empty($_GET['id'])) {
     $file_name = 'post.json';
     $getPost = $file->getFileContent($upload_path.$file_name);
@@ -50,7 +50,7 @@ $blogger = new blogger();
             'label' => $label_add,
             'uniq_id' => $uniq_id,
         );
-        $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+        $upload_path = dirname(__FILE__) . '/../uploads/user/';
         $file_name = 'post-action.json';
         $jsonPost = $file->json($upload_path,$file_name, $dataPost);
         header('Location: ' . base_url . 'blogger/post.php?do=post');
@@ -61,7 +61,7 @@ $blogger = new blogger();
         $blogger = new blogger();
         $client = new Google_Client();
         $client->setAccessToken($_SESSION['tokenSessionKey']);
-        $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+        $upload_path = dirname(__FILE__) . '/../uploads/user/';
         $file_name = 'post-action.json';
         $str = file_get_contents($upload_path.$file_name);
         $json = json_decode($str);
@@ -98,10 +98,7 @@ $blogger = new blogger();
                     if (!file_exists(dirname(__FILE__) . '/../uploads/blogger/posts')) {
                         mkdir(dirname(__FILE__) . '/../uploads/blogger/posts', 0700);
                     }
-                    if (!file_exists(dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'])) {
-                        mkdir(dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'], 0700);
-                    }
-                    $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/';
+                    $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/';
                     if(empty($g_bid)) {
                         if(!empty($getpost)) {
                             $getp_id = $getpost;
@@ -127,7 +124,7 @@ $blogger = new blogger();
                                 'link'     => $vdoInfo->link,
                                 'bid'     => $getpost,
                             );
-                            $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['user_id'] . '/'.$_SESSION['fsite'].'/';
+                            $upload_path = dirname(__FILE__) . '/../uploads/posts/' .$_SESSION['fsite'].'/';
                             $csv = $file->json($upload_path,$vdoInfo->file_name, $post_data,'update');
                             /*End update file*/
                         }
@@ -163,7 +160,7 @@ $blogger = new blogger();
                 'label' => $json->label,
                 'uniq_id' => $json->uniq_id,
             );
-            $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+            $upload_path = dirname(__FILE__) . '/../uploads/user/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
             if(!empty($postNext)) {
