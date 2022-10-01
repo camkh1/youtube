@@ -1,5 +1,6 @@
 <?php
 include dirname(__FILE__) .'/../top.php';
+unset($_SESSION['back']);
 if (empty($_SESSION['tokenSessionKey'])) {
     $client = new Google_Client();
     $client->setAccessToken($_SESSION['tokenSessionKey']);
