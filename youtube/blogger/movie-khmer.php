@@ -79,6 +79,7 @@ foreach ($html->find('.video-item') as $e) {
         $checkForDup = $setLabel .'-'. trim($checkForDup).'.json';
         $parse = parse_url($link);
         $_SESSION['fsite'] = $host = explode('.', $parse['host'])[1];
+        $_SESSION['url_id'] = $link;
 
         /*Check for post exist*/
         // if(!empty($title)) {
