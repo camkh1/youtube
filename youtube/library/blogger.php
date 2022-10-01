@@ -1171,7 +1171,12 @@ HTML;
                     $id = $entry->id->{'$t'};
                 }
             }
-            var_dump($id);die;
+            var_dump($id);
+            echo '<br/>';
+            echo '<pre>';
+            print_r($response);
+            echo '</pre>';
+            die;
             // $response = str_replace('gdata.io.handleScriptLoaded({', '{',$response);
             // $response = str_replace('}}]}});', '}}]}}',$response);
             // $html = json_decode($response);        
