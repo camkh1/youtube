@@ -1160,36 +1160,24 @@ HTML;
         if(!empty($label)) {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/summary/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json';
             $response = file_get_contents($link_blog);
-            $response = str_replace('gdata.io.handleScriptLoaded({', '{',$response);
-            $response = str_replace('}}]}});', '}}]}}',$response);
             $html = json_decode($response);
         } else {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.$keyWord.'&start-index='.$start;
             $response = json_decode(file_get_contents($link_blog));
             if(!empty($response)) {
                 foreach ($response->feed->entry as $key => $entry) {
-                    $id = $entry->id->{'$t'};
+                    $data_id = $entry->id->{'$t'};
                 }
             }
-            var_dump($id);
-            echo '<br/>';
-            echo '<pre>';
-            print_r($response);
-            echo '</pre>';
-            die;
-            // $response = str_replace('gdata.io.handleScriptLoaded({', '{',$response);
-            // $response = str_replace('}}]}});', '}}]}}',$response);
-            // $html = json_decode($response);        
+            if(!empty($data_id)) {
+                $id = explode('.post-', $data_id);
+                if(!empty($id[1])) {
+                    $id = $id[1];
+                } else {
+                    $id = '';
+                }
+            }       
         }
-        // if(!empty($keyWord)) {
-        //     $check = $this->getPost($html,$keyWord);
-        //     if(!empty($check)) {
-        //         return $check;
-        //     } else {
-        //         return false;
-        //     }
-        // } else {
-        //     return $html;
-        // }    
+        return $id; 
     }
 }

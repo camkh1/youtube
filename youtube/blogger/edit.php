@@ -117,6 +117,7 @@ $blogger = new blogger();
                         $dataContent->title    = $json->title;
                     } else {
                         $pid = $blogger->searchPost($json->uniq_id,$bids->bid);
+                        echo $pid;
                         die;
                         break;
                         // $str = time();
