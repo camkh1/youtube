@@ -1166,7 +1166,12 @@ HTML;
         } else {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.$keyWord.'&start-index='.$start;
             $response = file_get_contents($link_blog);
-            var_dump($response);die;
+            if(!empty($response)) {
+                foreach ($response->entry as $key => $entry) {
+                    $id = $entry->id->{'$t'};
+                }
+            }
+            var_dump($id);die;
             // $response = str_replace('gdata.io.handleScriptLoaded({', '{',$response);
             // $response = str_replace('}}]}});', '}}]}}',$response);
             // $html = json_decode($response);        
