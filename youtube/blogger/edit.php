@@ -116,14 +116,17 @@ $blogger = new blogger();
                         $dataContent->pid      = $pid;
                         $dataContent->title    = $json->title;
                     } else {
-                        $str = time();
-                        $str = md5($str);
-                        $uniq_id = substr($str, 0, 9);
-                        $dataContent->title    = $json->title . ' id ' . $uniq_id;  
-                        $dataContent->editpost = false;
-                        $dataContent->pid      = '';
+                        $pid = $blogger->searchPost($json->uniq_id,$bids->bid);
+                        die;
+                        break;
+                        // $str = time();
+                        // $str = md5($str);
+                        // $uniq_id = substr($str, 0, 9);
+                        // $dataContent->title    = $json->title . ' id ' . $uniq_id;  
+                        // $dataContent->editpost = false;
+                        // $dataContent->pid      = '';
                     }
-                    $getpost               = $blogger->blogger_post($client,$dataContent);
+                    //$getpost               = $blogger->blogger_post($client,$dataContent);
                     /*End post to Blog*/
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
                     $posted = array_push($countPosted, $bids->bid);
