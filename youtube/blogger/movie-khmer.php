@@ -67,10 +67,10 @@ foreach ($html->find('.video-item') as $e) {
     $Cates = $site->getLabelBySpec($setLabel ,$LabelType, $LabelStatus);
     /*End set Label*/
     /*for test*/
-    // $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/sneah-mun-thngai-licht-hd-part-13-video-1639897.html';
-    // $title = trim('Sneah Mun Thngai Licht [HD]');
-    // $setLabel = 'china';
-    // $part = 13;
+    $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/sneah-mun-thngai-licht-hd-part-13-video-1639897.html';
+    $title = trim('Sneah Mun Thngai Licht [HD]');
+    $setLabel = 'china';
+    $part = 13;
     /*End for test*/
     if(!empty($link)) {
         $checkForDup = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
