@@ -112,6 +112,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 	$start = $_GET['sart'];
 	//$post = search($keyWordA,$blogID,'',500,$start);
 	$post = $blogger->searchPost($keyWordA,$blogID);
+	var_dump($post);die;
 	if(empty($post) && empty($post['runout'])):?>
 	<script type="text/javascript">
 		setTimeout(function(){
