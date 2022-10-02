@@ -20,7 +20,6 @@ $getBlogId = $file->getBlogID();
 if (empty($_GET['do'])) {
     if(!empty($_GET['id'])) {
         $getEditBlogId = $file->getBlogToEdit();
-        var_dump($getEditBlogId);
         if(!empty($getEditBlogId)) {
             $editaction = $_GET['id'];
         } else {
@@ -30,7 +29,6 @@ if (empty($_GET['do'])) {
         //header('Location: ' . base_url . 'blogger/index.php?m=no_id');
     }
 }
-die;
 $blogger = new blogger();
 //$post = $blogger->MoviePost($getBlogId,$getPost);
 
