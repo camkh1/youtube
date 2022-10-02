@@ -12,7 +12,7 @@ include dirname(__FILE__) .'/../library/blogger.php';
 $upload_path = dirname(__FILE__) . '/../uploads/user/';
 $file_name = 'post.json';
 $file = new file();
-$getPost = $file->getFileContent($upload_path.$file_name);
+//$getPost = $file->getFileContent($upload_path.$file_name);
 
 $getBlogId = $file->getBlogID();
 
