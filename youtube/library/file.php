@@ -175,6 +175,12 @@ class file {
     public function getBlogToEdit()
     {
         $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/' . $_GET['id'].'.csv';
+        $search_found = dirname(__FILE__) . '/../uploads/blogger/posts/search_found.csv';
+        if(!file_exists($blogEdit) && file_exists($search_found)) {
+            if (!copy($search_found, $blogEdit)) {
+                echo "failed to copy $file...\n";
+            }
+        }
         return $this->getFileContent($blogEdit);
     }
 

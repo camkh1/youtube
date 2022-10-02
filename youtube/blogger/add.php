@@ -10,6 +10,15 @@ if (!empty($_SESSION['tokenSessionKey'])) {
         header('Location: ' . base_url .'login.php?renew=1&back=' . urlencode($CURRENT_URL));
     }
 }
+if(!empty($_GET['id'])):
+    $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/' . $_GET['id'].'.csv';
+    $search_found = dirname(__FILE__) . '/../uploads/blogger/posts/search_found.csv';
+    if(!file_exists($blogEdit) && file_exists($search_found)) {
+        if (!copy($search_found, $blogEdit)) {
+            echo "failed to copy $file...\n";
+        }
+    }
+endif;
 function checkDuplicate($bid,$label='',$max=3,$start = 1){
     if(!empty($label)) {
         $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/summary/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json-in-script';
