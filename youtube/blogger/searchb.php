@@ -8,7 +8,7 @@ if (empty($_SESSION['tokenSessionKey'])) {
 }
 if(!empty($_POST['keyword'])) {
     $keyword = urlencode($_POST['keyword']);
-    //header("Location: " . base_url . "blogger/search.php?start=1&keyword=" . $keyword . "&frompost=".$_POST['idpost']);
+    header("Location: " . base_url . "blogger/search.php?start=1&keyword=" . $keyword . ");
 }
 ?>
 <!doctype html>

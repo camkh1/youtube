@@ -61,12 +61,13 @@ function getPost($data,$keyWord){
 }
 
 $file = new file();
+$blogger = new blogger();
 if(!empty($_GET['start'])) {
 	$_SESSION['to_post_id'] = !empty($_GET['frompost']) ? $_GET['frompost'] : 'search_found';
 	$data = array();
-	$search = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/search.csv';
+	$search = dirname(__FILE__) . '/../uploads/blogger/posts/search.csv';
 	$fileNames = $_SESSION['to_post_id'];
-		$DsearchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/'.$fileNames.'.csv';
+		$DsearchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 	@unlink($DsearchFound);
 	@unlink($search);
 	if(!empty($_GET['action']) && $_GET['action'] == '1') {
@@ -109,7 +110,8 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 	$keyWordA = $_GET['keyword'];
 	$keyWord = urlencode($keyWordA);
 	$start = $_GET['sart'];
-	$post = search($keyWordA,$blogID,'',500,$start);
+	//$post = search($keyWordA,$blogID,'',500,$start);
+	$post = $blogger->searchPost($keyWordA,$blogID);
 	if(empty($post) && empty($post['runout'])):?>
 	<script type="text/javascript">
 		setTimeout(function(){
@@ -121,7 +123,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 	</script>
 	<?php elseif(!empty($post) && empty($post['runout'])):
 		$fileNames = $_SESSION['to_post_id'];
-		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/'.$fileNames.'.csv';
+		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 		$checkLine = $file->cleanDuplicatePost($searchFound,$blogID);
 		if(empty($checkLine)) { 
 			$handle = fopen($searchFound, "a");
@@ -131,7 +133,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 
         /*start save current id*/
         $data = array();
-        $search = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/search.csv';
+        $search = dirname(__FILE__) . '/../uploads/blogger/posts/search.csv';
         $searchN = $file->getFileContent($search,'csv');
 	    foreach ($searchN as $key => $row) {
 	        $bid = $row[0];
@@ -173,7 +175,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 	    /*End start search new blog*/
 	else :
 		$fileNames = $_SESSION['to_post_id'];
-		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/'.$fileNames.'.csv';
+		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 		$checkLine = $file->cleanDuplicatePost($searchFound,$blogID);
 		if(empty($checkLine)) {
 			$handle = fopen($searchFound, "a");
@@ -183,7 +185,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 
 		/*start save bid that not found id*/
         $data = array();
-        $search = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/search.csv';
+        $search = dirname(__FILE__) . '/../uploads/blogger/posts/search.csv';
         $searchN = $file->getFileContent($search,'csv');
 	    foreach ($searchN as $key => $row) {
 	        $bid = $row[0];

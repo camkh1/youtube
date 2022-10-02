@@ -118,9 +118,9 @@ $blogger = new blogger();
                         $dataContent->title    = $json->title;
                     } else {
                         $pid1 = $blogger->searchPost($json->uniq_id,$bids->bid);
-                        if(!empty($pid1)) {
+                        if(!empty($pid1['pid'])) {
                             $dataContent->editpost = 1;
-                            $dataContent->pid      = $pid1;
+                            $dataContent->pid      = $pid1['pid'];
                             $dataContent->title    = $json->title;
                         } else {
                             $str = time();

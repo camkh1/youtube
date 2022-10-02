@@ -1,6 +1,6 @@
 <?php
 $fileNames = !empty($_GET['search_found']) ? $_GET['search_found'] : 'search_found';
-$searchFound = dirname(__FILE__) . '/../../uploads/blogger/posts/'.$_SESSION['user_id'] . '/'.$fileNames.'.csv';
+$searchFound = dirname(__FILE__) . '/../../uploads/blogger/posts/'.$fileNames.'.csv';
 $file = new file();
 $search = $file->getFileContent($searchFound);
 $data = array();

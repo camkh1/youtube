@@ -1158,15 +1158,33 @@ HTML;
     }
     public function searchPost($keyWord='',$bid,$label='',$max=1,$start = 1){
         if(!empty($label)) {
-            $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/summary/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json';
-            $response = file_get_contents($link_blog);
+            $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json';
+            $arrContextOptions=array(
+                "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                ),
+            ); 
+            $response = file_get_contents($link_blog, false, stream_context_create($arrContextOptions));
             $html = json_decode($response);
         } else {
-            $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.$keyWord.'&start-index='.$start;
-            $response = json_decode(file_get_contents($link_blog));
+            $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.urlencode($keyWord).'&start-index='.$start;
+            $arrContextOptions=array(
+                "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                ),
+            ); 
+            $response = json_decode(file_get_contents($link_blog, false, stream_context_create($arrContextOptions)));
             if(!empty($response)) {
-                foreach ($response->feed->entry as $key => $entry) {
+                foreach (@$response->feed->entry as $key => $entry) {
                     $data_id = $entry->id->{'$t'};
+                    $title = @$entry->title->{'$t'};
+                    $title = str_replace('[', '', $title);
+                    $title = str_replace(']', '', $title);
+                    $title = str_replace('(', '', $title);
+                    $title = str_replace(')', '', $title);
+                    $title = str_replace('||', '', $title);
                 }
             }
             if(!empty($data_id)) {
@@ -1178,6 +1196,12 @@ HTML;
                 }
             }       
         }
-        return $id; 
+        if(!empty($id)) {
+            return array('title'=> $title,'pid'=>$id);
+        } else {
+            return array('runout' => 1);
+        }
+        
+        //return $id; 
     }
 }
