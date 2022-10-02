@@ -101,7 +101,7 @@ if(!empty($_GET['start'])) {
 	
 	$keyWordA = $_GET['keyword'];
 	$keyWord = urlencode($keyWordA);
-	die;echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/search.php?search=1&keyword='.$keyWord.'&bid=' . $bid . '&sart=1#1";</script>';
+	echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/search.php?search=1&keyword='.$keyWord.'&bid=' . $bid . '&sart=1#1";</script>';
 }
 
 if(!empty($_GET['search']) && !empty($_GET['bid'])) {

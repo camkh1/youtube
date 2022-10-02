@@ -229,7 +229,6 @@ $category = $data->feed->category;
                                                     <a class="btn btn-info" href="post/searchbloggerbost"><i class="icon-search"></i></a>
                                                 <label>
                                                     <input type="hidden" name="start" value="1">
-                                                    <input type="hidden" name="action" value="1">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">
                                                             <i class="icon-search">
