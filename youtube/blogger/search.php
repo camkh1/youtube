@@ -101,7 +101,7 @@ if(!empty($_GET['start'])) {
 	
 	$keyWordA = $_GET['keyword'];
 	$keyWord = urlencode($keyWordA);
-	echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/search.php?search=1&keyword='.$keyWord.'&bid=' . $bid . '&sart=1#1";</script>';
+	die;echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/search.php?search=1&keyword='.$keyWord.'&bid=' . $bid . '&sart=1#1";</script>';
 }
 
 if(!empty($_GET['search']) && !empty($_GET['bid'])) {
@@ -122,7 +122,6 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 		}, 1000);
 	</script>
 	<?php elseif(!empty($post) && empty($post['runout'])):
-	echo 22222;die;
 		$fileNames = $_SESSION['to_post_id'];
 		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 		$checkLine = $file->cleanDuplicatePost($searchFound,$blogID);
@@ -175,7 +174,6 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 		}		
 	    /*End start search new blog*/
 	else :
-		echo 1111;die;
 		$fileNames = $_SESSION['to_post_id'];
 		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 		$checkLine = $file->cleanDuplicatePost($searchFound,$blogID);
