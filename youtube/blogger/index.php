@@ -13,13 +13,13 @@ include dirname(__FILE__) .'/../library/blogger.php';
 if(empty($_GET['search'])){
 function checkDuplicate($bid,$label='',$max=3,$start = 1){
     if(!empty($label)) {
-        $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/summary/-/'.urlencode($label).'?max-results='.$max .'&start-index='.$start.'&alt=json-in-script';
+        $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default/-/'.urlencode($label).'?max-results='.$max .'&start-index='.$start.'&alt=json-in-script';
         $response = file_get_contents($link_blog);
         $response = str_replace('gdata.io.handleScriptLoaded({', '{',$response);
         $response = str_replace('}}]}});', '}}]}}',$response);
         $html = json_decode($response);
     } else {
-        $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/summary?max-results='.$max .'&start-index='.$start.'&alt=json-in-script';
+        $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?max-results='.$max .'&start-index='.$start.'&alt=json-in-script';
         $response = file_get_contents($link_blog);
         $response = str_replace('gdata.io.handleScriptLoaded({', '{',$response);
         $response = str_replace('}}]}});', '}}]}}',$response);
@@ -300,6 +300,13 @@ $category = $data->feed->category;
                                             $pid   = $arr[2];
                                             //$img = $blogger->resize_image($value->{'media$thumbnail'}->url,'72-c');
                                             $img = @$value->{'media$thumbnail'}->url;
+                                            if(empty($img)):
+                                                $searchImg = $value->content->{'$t'};
+                                                preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $searchImg, $imageS);
+                                                if(!empty($imageS[1])):
+                                                    $img = $imageS[1];
+                                                endif;
+                                            endif;
                                             ?><tr class="odd">
                                             <td class="checkbox-column  sorting_1">
                                                <input type="checkbox" id="itemid" name="itemid[]" class="uniform" value="<?php echo @$pid; ?>" />

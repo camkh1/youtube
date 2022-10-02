@@ -6,7 +6,13 @@ class blogger extends file {
         $log_id = $_SESSION['user_id'];
         /* end delete before insert new list */
         include dirname(__FILE__) .'/simple_html_dom.php';
-        $html   = file_get_html($site_url);
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        ); 
+        $html   = file_get_html($site_url, false, stream_context_create($arrContextOptions));
         $title  = @$html->find('.post-title a', 0)->innertext;
         $title1 = @$html->find('.post-title', 0)->innertext;
         if ($title) {
@@ -1176,7 +1182,7 @@ HTML;
                 ),
             ); 
             $response = json_decode(file_get_contents($link_blog, false, stream_context_create($arrContextOptions)));
-            if(!empty($response)) {
+            if(!empty($response->feed->entry)) {
                 foreach (@$response->feed->entry as $key => $entry) {
                     $data_id = $entry->id->{'$t'};
                     $title = @$entry->title->{'$t'};

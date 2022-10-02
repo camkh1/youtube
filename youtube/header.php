@@ -23,6 +23,7 @@
                 <ul class="dropdown-menu"> 
                     <li><a href="<?php echo base_url;?>blogger/index.php"><i class="icon-youtube-play"></i> List</a></li>
                     <li><a href="<?php echo base_url;?>blogger/add.php"><i class="icon-share"></i> Add</a></li>
+                    <li><a href="<?php echo base_url;?>blogger/search-edit.php"><i class="icon-share"></i> Search and Edit</a></li>
                 </ul>
             </li>
         </ul>

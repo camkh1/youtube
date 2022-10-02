@@ -55,7 +55,7 @@ if (!empty($_POST['submit'])) {
         $xmlurl = sitekmobilemovie($xmlurl, $title, $thumb, $id, $label);
     }
     $list = $site->getfromsiteid($xmlurl, $id, $thumb, $title, $label);
-    $upload_path = dirname(__FILE__) . '/../uploads/user/'.$_SESSION['user_id'] . '/';
+    $upload_path = dirname(__FILE__) . '/../uploads/user/';
     $file_name = 'post.json';
     $file = new file();
     $csv = $file->json($upload_path,$file_name, $list);

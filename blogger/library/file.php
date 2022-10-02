@@ -172,9 +172,10 @@ class file {
     {
         return $this->getFileContent(dirname(__FILE__) . '/../uploads/files/blogs/blogid.csv');
     }
-    public function getBlogToEdit()
+    public function getBlogToEdit($id)
     {
-        $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/' . $_GET['id'].'.csv';
+        echo $id;die;
+        $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/' . $id.'.csv';
         return $this->getFileContent($blogEdit);
     }
 

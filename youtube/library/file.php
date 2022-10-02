@@ -174,7 +174,7 @@ class file {
     }
     public function getBlogToEdit()
     {
-        $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/'.$_SESSION['user_id'] . '/' . $_GET['id'].'.csv';
+        $blogEdit = dirname(__FILE__) . '/../uploads/blogger/posts/' . $_GET['id'].'.csv';
         return $this->getFileContent($blogEdit);
     }
 

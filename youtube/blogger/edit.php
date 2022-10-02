@@ -12,13 +12,15 @@ include dirname(__FILE__) .'/../library/blogger.php';
 $upload_path = dirname(__FILE__) . '/../uploads/user/';
 $file_name = 'post.json';
 $file = new file();
-//$getPost = $file->getFileContent($upload_path.$file_name);
-
+if(!empty($_GET['id'])) {
+    $getPost = $file->getFileContent($upload_path.$file_name);
+}
 $getBlogId = $file->getBlogID();
 
 if (empty($_GET['do'])) {
     if(!empty($_GET['id'])) {
         $getEditBlogId = $file->getBlogToEdit();
+        var_dump($getEditBlogId);
         if(!empty($getEditBlogId)) {
             $editaction = $_GET['id'];
         } else {
@@ -28,6 +30,7 @@ if (empty($_GET['do'])) {
         //header('Location: ' . base_url . 'blogger/index.php?m=no_id');
     }
 }
+die;
 $blogger = new blogger();
 //$post = $blogger->MoviePost($getBlogId,$getPost);
 
