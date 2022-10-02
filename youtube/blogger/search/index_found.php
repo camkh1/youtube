@@ -5,7 +5,14 @@ $file = new file();
 $search = $file->getFileContent($searchFound);
 $data = array();
 if(!empty($search)) {
-    $getPostSearch = 'https://www.googleapis.com/blogger/v3/blogs/'.$search[0]->bid.'/posts/'.$search[0]->bname.'?key=AIzaSyBM4KVC_25FUWH1auWDqsUfCcq30DFLkNM';
+    foreach ($search as $key => $value) {
+        if(!empty($value->bname)) {
+            $pid = $value->bname;
+            $bid = $value->bid;
+            break;
+        }
+    }
+    $getPostSearch = 'https://www.googleapis.com/blogger/v3/blogs/'.$bid.'/posts/'.$pid.'?key=AIzaSyBM4KVC_25FUWH1auWDqsUfCcq30DFLkNM';
     $str = file_get_contents($getPostSearch);
     $data = json_decode($str);
 }
