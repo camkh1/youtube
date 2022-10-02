@@ -122,6 +122,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 		}, 1000);
 	</script>
 	<?php elseif(!empty($post) && empty($post['runout'])):
+	echo 22222;die;
 		$fileNames = $_SESSION['to_post_id'];
 		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 		$checkLine = $file->cleanDuplicatePost($searchFound,$blogID);
@@ -174,6 +175,7 @@ if(!empty($_GET['search']) && !empty($_GET['bid'])) {
 		}		
 	    /*End start search new blog*/
 	else :
+		echo 1111;die;
 		$fileNames = $_SESSION['to_post_id'];
 		$searchFound = dirname(__FILE__) . '/../uploads/blogger/posts/'.$fileNames.'.csv';
 		$checkLine = $file->cleanDuplicatePost($searchFound,$blogID);
