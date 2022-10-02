@@ -60,10 +60,28 @@ if (!empty($_POST['submit'])) {
     $thumb     = @$_POST['imageid'];
     $label = @$_POST['label'];
     $title     = @$_POST['title'];
+    preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $xmlurl, $matches);
     if (preg_match('/kmobilemovie/', $xmlurl)) {
         $xmlurl = sitekmobilemovie($xmlurl, $title, $thumb, $id, $label);
+    } else if (!empty($matches[1])) {
+        $code = $matches[1];
+        $viddata[] = array(
+            'vid' => $code,
+            'part' => 1,
+            'vtype' => 'yt'
+        );
+        $list = array(
+            'title'     => trim($title) . ' || part ' . '[ 1 ]',
+            'type'     => 'vdolist',
+            'object_id' => $_SESSION['user_id'],
+            'image'     => $thumb,
+            'label'     => @$label,
+            'list'     => @$viddata,
+            'pid'     => '',
+        );   
+    } else {
+        $list = $site->getfromsiteid($xmlurl, $id, $thumb, $title, $label);
     }
-    $list = $site->getfromsiteid($xmlurl, $id, $thumb, $title, $label);
     $upload_path = dirname(__FILE__) . '/../uploads/user/';
     $file_name = 'post.json';
     $file = new file();

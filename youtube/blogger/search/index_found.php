@@ -154,7 +154,7 @@ if(!empty($search)) {
                                             }
                                             //link
                                             $link = $data->url;
-                                            $pid   = $search[0]->bname;
+                                            //$pid   = $search[0]->bname;
                                             $image = @$image['src'];
                                             ?><tr class="odd">
                                             <td class="checkbox-column  sorting_1">
