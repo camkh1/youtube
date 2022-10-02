@@ -107,8 +107,7 @@ $blogger = new blogger();
                 if ( $bids->bid == $id ) {
                     /*post to Blog*/                    
                     $pid = $file->searchForId($bids->bid, $arrSearch);
-                    $dataContent          = new stdClass();
-                    $dataContent->setdate = false;   
+                    $dataContent          = new stdClass();  
                     $dataContent->customcode = '';
                     $dataContent->bid     = $bids->bid;                          
                     $dataContent->bodytext = $json->body;
@@ -117,12 +116,18 @@ $blogger = new blogger();
                         $dataContent->editpost = 1;
                         $dataContent->pid      = $pid;
                         $dataContent->title    = $json->title;
+                        date_default_timezone_set('Asia/Phnom_Penh');
+                        $date = date("c");
+                        $dataContent->setdate = $date; 
                     } else {
                         $pid1 = $blogger->searchPost($json->uniq_id,$bids->bid);
                         if(!empty($pid1['pid'])) {
                             $dataContent->editpost = 1;
                             $dataContent->pid      = $pid1['pid'];
                             $dataContent->title    = $json->title;
+                            date_default_timezone_set('Asia/Phnom_Penh');
+                            $date = date("c");
+                            $dataContent->setdate = $date; 
                         } else {
                             $str = time();
                             $str = md5($str);
@@ -130,6 +135,7 @@ $blogger = new blogger();
                             $dataContent->title    = $json->title . ' id ' . $uniq_id;  
                             $dataContent->editpost = false;
                             $dataContent->pid      = '';
+                            $dataContent->setdate = false; 
                         }
                         
                     }
