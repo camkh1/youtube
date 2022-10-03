@@ -60,7 +60,6 @@ if (!empty($_POST['submit'])) {
     $thumb     = @$_POST['imageid'];
     $label = @$_POST['label'];
     $title     = @$_POST['title'];
-    echo 22222;die;
     preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $xmlurl, $matches);
     if (preg_match('/kmobilemovie/', $xmlurl)) {
         $xmlurl = sitekmobilemovie($xmlurl, $title, $thumb, $id, $label);
@@ -83,6 +82,7 @@ if (!empty($_POST['submit'])) {
     } else {
         $list = $site->getfromsiteid($xmlurl, $id, $thumb, $title, $label);
     }
+    var_dump($list);die;
     $upload_path = dirname(__FILE__) . '/../uploads/user/';
     $file_name = 'post.json';
     $file = new file();
