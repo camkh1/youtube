@@ -107,7 +107,7 @@ $blogger = new blogger();
                 if ( $bids->bid == $id ) {
                     /*post to Blog*/                    
                     $pid = $file->searchForId($bids->bid, $arrSearch);
-                    $dataContent          = new stdClass();  
+                    $dataContent          = new stdClass();
                     $dataContent->customcode = '';
                     $dataContent->bid     = $bids->bid;                          
                     $dataContent->bodytext = $json->body;
@@ -140,6 +140,8 @@ $blogger = new blogger();
                         
                     }
                     //$getpost = $blogger->blogger_post($client,$dataContent);
+                    $info = json_decode($_SESSION['tokenSessionKey']);
+                    $dataContent->access_token = $info->access_token;
                     $getpost = $blogger->postToBlogger($dataContent);
                     /*End post to Blog*/
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost->id,'status'=>1); 
