@@ -81,7 +81,8 @@ $blogger = new blogger();
                 if ( $bids->bid == $id ) {
                     /*post to Blog*/
                     $dataContent          = new stdClass();
-                    $dataContent->setdate = false;        
+                    $date = date("c");
+                    $dataContent->setdate = $date;      
                     $dataContent->editpost = false;
                     $dataContent->pid      = 0;
                     $dataContent->customcode = '';
@@ -89,8 +90,9 @@ $blogger = new blogger();
                     $dataContent->title    = $json->title;        
                     $dataContent->bodytext = $json->body;
                     $dataContent->label    = $json->label;
-                    $getpost               = $blogger->blogger_post($client,$dataContent);
-
+                    //$getpost               = $blogger->blogger_post($client,$dataContent);
+                    $postobj = $blogger->postToBlogger($dataContent);
+                    $getpost = $postobj->id;
                     /*Create CSV file for update later*/
                     if (!file_exists(dirname(__FILE__) . '/../uploads/blogger')) {
                         mkdir(dirname(__FILE__) . '/../uploads/blogger', 0700);

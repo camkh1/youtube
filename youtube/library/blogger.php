@@ -871,7 +871,6 @@ HTML;
                 $posts->setLocation($Location);
             }
             /*end set customcode*/
-
             /*add post*/
             if (empty($data->editpost)) {
                 $getpost = $service->posts->insert($data->bid, $posts);
@@ -887,6 +886,65 @@ HTML;
             return false;
             //echo $exc->getTraceAsString();
         }
+    }
+
+    public function postToBlogger($dataContent)
+    {
+        $str = stripslashes($dataContent->bodytext);
+        $str = str_replace("<br />", "\n", $str);
+        if(!empty($dataContent->pid)) {
+            $url = 'https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/'.$dataContent->pid;
+        } else {
+            $url = 'https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/';
+        }
+        $dataBody         = new stdClass();
+        $dataBody->kind = "blogger#post";
+        if(!empty($dataContent->pid)) {
+            $dataBody->id = $dataContent->pid;
+            $dataBody->selfLink = 'https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/'.$dataContent->pid;
+        }
+        $dataBody->blog = array('id'=>$dataContent->bid);
+        $dataBody->title = $dataContent->title;
+        $dataBody->content = $str;
+        if(!empty($dataContent->setdate)) {
+            $dataBody->updated = $dataContent->setdate;
+            $dataBody->published = $dataContent->setdate;
+        }
+        if(!empty($dataContent->customcode)) {
+            $dataBody->location = array(
+                'name'=>$dataContent->customcode,
+                'lat'=>'37.16031654673677',
+                'lng'=>'-108.984375',
+                'span'=>'51.044069,82.617188',
+            );
+        }
+        $dataBody->labels = [$dataContent->label];
+        $body = json_encode($dataBody);
+
+        $headerQuery = array();
+        $headerQuery[] = 'Authorization: OAuth '.$dataContent->access_token;
+        $headerQuery[] = 'Content-Length: '.strlen($body);
+        $headerQuery[] = 'Content-Type: application/json';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headerQuery);
+        if(empty($dataContent->pid)) {
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            
+        } else {
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
+        $data = curl_exec($ch);
+        $response = json_decode($data);
+        curl_close($ch);
+        return $response;
     }
 
     public function delete_blog_post($service, $posts, $bid, $pid)

@@ -139,9 +139,10 @@ $blogger = new blogger();
                         }
                         
                     }
-                    $getpost               = $blogger->blogger_post($client,$dataContent);
+                    //$getpost = $blogger->blogger_post($client,$dataContent);
+                    $getpost = $blogger->postToBlogger($dataContent);
                     /*End post to Blog*/
-                    $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
+                    $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost->id,'status'=>1); 
                     $posted = array_push($countPosted, $bids->bid);
                 } else {
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=> $bids->pid,'status'=>$bids->status);
