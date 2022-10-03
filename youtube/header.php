@@ -21,9 +21,9 @@
             <li class="dropdown user"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-male"></i> <span class="username">
                          Blogger</span> <i class="icon-caret-down small"></i> </a>
                 <ul class="dropdown-menu"> 
-                    <li><a href="<?php echo base_url;?>blogger/index.php"><i class="icon-youtube-play"></i> List</a></li>
+                    <li><a href="<?php echo base_url;?>blogger/index.php"><i class="icon-youtube-play"></i> List (blog)</a></li>
+                    <li><a href="<?php echo base_url;?>blogger/pc-list.php"><i class="icon-youtube-play"></i> List (PC)</a></li>
                     <li><a href="<?php echo base_url;?>blogger/add.php"><i class="icon-share"></i> Add</a></li>
-                    <li><a href="<?php echo base_url;?>blogger/search-edit.php"><i class="icon-share"></i> Search and Edit</a></li>
                 </ul>
             </li>
         </ul>
