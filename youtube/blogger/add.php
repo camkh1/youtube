@@ -18,9 +18,6 @@ if(!empty($_GET['id'])):
             echo "failed to copy $file...\n";
         }
     }
-    if(!file_exists($blogEdit)) {
-        echo 11111;
-    }
 endif;
 function checkDuplicate($bid,$label='',$max=3,$start = 1){
     if(!empty($label)) {
@@ -63,6 +60,7 @@ if (!empty($_POST['submit'])) {
     $thumb     = @$_POST['imageid'];
     $label = @$_POST['label'];
     $title     = @$_POST['title'];
+    echo 22222;die;
     preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $xmlurl, $matches);
     if (preg_match('/kmobilemovie/', $xmlurl)) {
         $xmlurl = sitekmobilemovie($xmlurl, $title, $thumb, $id, $label);
