@@ -108,7 +108,7 @@ $blogger = new blogger();
                         if(!empty($vdoInfo->uniq_id)) {
                             $getp_id = $getpost;
                             $_SESSION['post_id'] = $vdoInfo->uniq_id;
-                            $handle = fopen($uploadPath.$getpost.'.csv', "w");
+                            $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "w");
                             fputcsv($handle, array($bids->bid,$getpost));
                             fclose($handle);
 
@@ -136,7 +136,7 @@ $blogger = new blogger();
                     } else {
                         $getp_id = $g_bid;
                         $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "a");
-                        fputcsv($handle, array($bids->bid,$_SESSION['post_id']));
+                        fputcsv($handle, array($bids->bid,$getpost));
                         fclose($handle);
                     }
                     
