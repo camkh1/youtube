@@ -76,6 +76,7 @@ $blogger = new blogger();
             $fileName = '';
             $totalPosts = count($json->blogid);
             $countPosted = array();
+            date_default_timezone_set('Asia/Phnom_Penh');
             foreach ($json->blogid as $bids) {
                 $i++;           
                 if ( $bids->bid == $id ) {
@@ -104,9 +105,9 @@ $blogger = new blogger();
                     }
                     $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/';
                     if(empty($g_bid)) {
-                        if(!empty($getpost)) {
+                        if(!empty($vdoInfo->uniq_id)) {
                             $getp_id = $getpost;
-                            $_SESSION['post_id'] = $getpost;
+                            $_SESSION['post_id'] = $vdoInfo->uniq_id;
                             $handle = fopen($uploadPath.$getpost.'.csv', "w");
                             fputcsv($handle, array($bids->bid,$getpost));
                             fclose($handle);
@@ -126,7 +127,7 @@ $blogger = new blogger();
                                 'list'     => $vdoInfo->list,
                                 'file_name'     => $vdoInfo->file_name,
                                 'link'     => $vdoInfo->link,
-                                'bid'     => $getpost,
+                                'bid'     => $vdoInfo->uniq_id,
                             );
                             $upload_path = dirname(__FILE__) . '/../uploads/posts/' .$_SESSION['fsite'].'/';
                             $csv = $file->json($upload_path,$vdoInfo->file_name, $post_data,'update');
@@ -135,7 +136,7 @@ $blogger = new blogger();
                     } else {
                         $getp_id = $g_bid;
                         $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "a");
-                        fputcsv($handle, array($bids->bid,$getpost));
+                        fputcsv($handle, array($bids->bid,$_SESSION['post_id']));
                         fclose($handle);
                     }
                     

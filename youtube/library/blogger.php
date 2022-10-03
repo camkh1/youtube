@@ -890,6 +890,7 @@ HTML;
 
     public function postToBlogger($dataContent)
     {
+        date_default_timezone_set('Asia/Phnom_Penh');
         $str = stripslashes($dataContent->bodytext);
         $str = str_replace("<br />", "\n", $str);
         if(!empty($dataContent->pid)) {

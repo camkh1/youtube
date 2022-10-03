@@ -102,6 +102,7 @@ $blogger = new blogger();
             $fileName = '';
             $totalPosts = count($json->blogid);
             $countPosted = array();
+            date_default_timezone_set('Asia/Phnom_Penh');
             foreach ($json->blogid as $bids) {
                 $i++;                
                 if ( $bids->bid == $id ) {
@@ -143,7 +144,7 @@ $blogger = new blogger();
                     $info = json_decode($_SESSION['tokenSessionKey']);
                     $dataContent->access_token = $info->access_token;
                     $postobj = $blogger->postToBlogger($dataContent);
-                    $getpost = $postobj->id;
+                    $getpost = @$postobj->id;
                     /*End post to Blog*/
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
                     $posted = array_push($countPosted, $bids->bid);
