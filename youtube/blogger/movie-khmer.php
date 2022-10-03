@@ -109,6 +109,7 @@ foreach ($html->find('.video-item') as $e) {
         $text = $p->find('.content .card-text .text-uppercase', 0)->plaintext;
         $sps = array();
         $sp = getnext($plink,$sps);
+        echo 'count video list: ' . count($sp).'<br/>';
         /*save file to local*/
         $file_name = preg_replace("/[^a-zA-Z0-9]+/", " ", trim($title));
         $file_name = preg_replace('/\s+/', '-', $file_name);
@@ -212,7 +213,7 @@ foreach ($html->find('.video-item') as $e) {
             if(!empty($numid[1]) && !empty($sp)) {
                 for ($n=0; $n < count($sp); $n++) {
                     $setNum = $n+1; 
-                    $glink = $sp[$n];
+                    $glink = @$sp[$n];
                     echo @$sp[$n]. ' - ' .$n.' <br/>';
                     // if(intval($part) <=count(@$listv) && end($sp) != $sp[$n]) {
                     //     $vdoList[$setNum] = array(
@@ -237,11 +238,16 @@ foreach ($html->find('.video-item') as $e) {
                             "verify_peer"=>false,
                             "verify_peer_name"=>false,
                         ),
-                    ); 
-                    $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
-                    $code = $con->find('.embed-responsive-item iframe', 0)->src;
-                    $data_list = $site->get_video_id($code);
-                    $vdoList[$setNum] = $data_list;
+                    );
+                    if(!empty($glink)) {
+                        $con = file_get_html($sp[$n], false, stream_context_create($arrContextOptions));
+                        $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                        $data_list = $site->get_video_id($code);
+                        $vdoList[$setNum] = $data_list;
+                    } else {
+                        continue;
+                    }
+                    
                 }
             }
             /*End create file to post*/
