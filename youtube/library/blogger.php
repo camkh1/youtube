@@ -13,6 +13,7 @@ class blogger extends file {
             ),
         ); 
         $html   = file_get_html($site_url, false, stream_context_create($arrContextOptions));
+        var_dump($html);die;
         $title  = @$html->find('.post-title a', 0)->innertext;
         $title1 = @$html->find('.post-title', 0)->innertext;
         if ($title) {
