@@ -64,7 +64,6 @@ if (!empty($_POST['submit'])) {
     if (preg_match('/kmobilemovie/', $xmlurl)) {
         $xmlurl = sitekmobilemovie($xmlurl, $title, $thumb, $id, $label);
     } else if (!empty($matches[1])) {
-        echo 1111;
         $code = $matches[1];
         $viddata[] = array(
             'vid' => $code,
@@ -81,10 +80,8 @@ if (!empty($_POST['submit'])) {
             'pid'     => '',
         );   
     } else {
-        echo 2222;
         $list = $site->getfromsiteid($xmlurl, $id, $thumb, $title, $label);
     }
-    var_dump($list);die;
     $upload_path = dirname(__FILE__) . '/../uploads/user/';
     $file_name = 'post.json';
     $file = new file();
