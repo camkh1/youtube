@@ -86,7 +86,7 @@ if (!empty($_POST['submit'])) {
     $file_name = 'post.json';
     $file = new file();
     $csv = $file->json($upload_path,$file_name, $list);
-    
+    var_dump($csv);die;
     $_SESSION['url_id'] = $xmlurl;
     //$code = get_from_site_id($xmlurl, $id, $thumb, $title, '', $videotype); 
     if (!empty($_POST['edit_post_id'])) {
