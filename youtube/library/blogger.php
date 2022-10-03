@@ -13,7 +13,6 @@ class blogger extends file {
             ),
         ); 
         $html   = file_get_html($site_url, false, stream_context_create($arrContextOptions));
-        var_dump($html);die;
         $title  = @$html->find('.post-title a', 0)->innertext;
         $title1 = @$html->find('.post-title', 0)->innertext;
         if ($title) {
@@ -26,6 +25,7 @@ class blogger extends file {
         $postTitle = $title;
 
         $list_id = $this->getsitecontent($html, $videotype);
+        var_dump($list_id);die;
         if (preg_match('/og:image/', $html)) {
         	$thumbIn = $html->find('meta[property=og:image]', 0)->content;
         } else if (preg_match('/[class=noi]/', $html)) {
