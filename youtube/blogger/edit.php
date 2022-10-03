@@ -142,9 +142,10 @@ $blogger = new blogger();
                     //$getpost = $blogger->blogger_post($client,$dataContent);
                     $info = json_decode($_SESSION['tokenSessionKey']);
                     $dataContent->access_token = $info->access_token;
-                    $getpost = $blogger->postToBlogger($dataContent);
+                    $postobj = $blogger->postToBlogger($dataContent);
+                    $getpost = $postobj->id;
                     /*End post to Blog*/
-                    $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost->id,'status'=>1); 
+                    $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
                     $posted = array_push($countPosted, $bids->bid);
                 } else {
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=> $bids->pid,'status'=>$bids->status);
