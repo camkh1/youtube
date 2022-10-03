@@ -213,6 +213,7 @@ foreach ($html->find('.video-item') as $e) {
                 for ($n=0; $n < intval($part); $n++) {
                     $setNum = $n+1; 
                     $glink = $sp[$n];
+                    echo @$sp[$n]. ' - ' .$n.' <br/>';
                     // if(intval($part) <=count(@$listv) && end($sp) != $sp[$n]) {
                     //     $vdoList[$setNum] = array(
                     //         'vid'  => $listv[($n+1)]['vid'],
