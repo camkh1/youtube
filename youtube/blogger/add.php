@@ -18,6 +18,9 @@ if(!empty($_GET['id'])):
             echo "failed to copy $file...\n";
         }
     }
+    if(!file_exists($blogEdit)) {
+        echo 11111;
+    }
 endif;
 function checkDuplicate($bid,$label='',$max=3,$start = 1){
     if(!empty($label)) {
