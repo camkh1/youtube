@@ -26,37 +26,49 @@ $dataContent->bodytext = 'just another test. ssss';
 $dataContent->label    = 'news';
 $info = json_decode($_SESSION['tokenSessionKey']);
 $dataContent->access_token = $info->access_token;
-//post($dataContent);
-$getpost               = $blogger->postToBlogger($dataContent);
-var_dump($getpost->id);
+$dataContent->titleLink = 'test titleLink';
+$getpost = postToBlogger($dataContent);
+//$getpost               = $blogger->postToBlogger($dataContent);
+var_dump($getpost);
 function postToBlogger($dataContent='')
 {
+    $str = stripslashes($dataContent->bodytext);
+    $str = str_replace("<br />", "\n", $str);
     if(!empty($dataContent->pid)) {
         $url = 'https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/'.$dataContent->pid;
-        $body = ' {
-             "kind": "blogger#post",
-             "id": "'.$dataContent->pid.'",
-             "blog": {
-              "id": "'.$dataContent->bid.'"
-             },
-             "selfLink": "https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/'.$dataContent->pid.'",
-             "title": "'.$dataContent->title.'",
-             "content": "'.$dataContent->bodytext.'",
-             "labels": ["'.$dataContent->label.'"],
-             "updated": "'.$dataContent->setdate.'",
-             "published": "'.$dataContent->setdate.'",
-            }
-';
     } else {
         $url = 'https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/';
-        $body = ' { 
-            "kind": "blogger#post", 
-            "blog": {"id": "'.$dataContent->bid.'"}, 
-            "title": "'.$dataContent->title.'", 
-            "content": "'.$dataContent->bodytext.'",
-            "labels": ["'.$dataContent->label.'"],
-        }';
     }
+    $dataBody         = new stdClass();
+    $dataBody->kind = "blogger#post";
+    if(!empty($dataContent->pid)) {
+        $dataBody->id = $dataContent->pid;
+        $dataBody->selfLink = 'https://www.googleapis.com/blogger/v3/blogs/'.$dataContent->bid.'/posts/'.$dataContent->pid;
+    }
+    $dataBody->blog = array('id'=>$dataContent->bid);
+    $dataBody->title = $dataContent->title;
+    $dataBody->content = $str;
+    if(!empty($dataContent->setdate)) {
+        $dataBody->updated = $dataContent->setdate;
+        $dataBody->published = $dataContent->setdate;
+    }
+    if(!empty($dataContent->customcode)) {
+        $dataBody->location = array(
+            'name'=>$dataContent->customcode,
+            'lat'=>'37.16031654673677',
+            'lng'=>'-108.984375',
+            'span'=>'51.044069,82.617188',
+        );
+    }
+    $dataBody->labels = [$dataContent->label];
+    $limon_arr = new stdClass();
+    $limon_arr->url = 'http://title.com';
+    $limon_arr->rel = 'enclosure';
+    $limon_arr->type ='mp3';
+    $limon_arr->length = '0';
+    $limonArray[] = $limon_arr;
+    $dataBody->link = $limonArray;
+    $body = json_encode($dataBody);
     $headerQuery = array();
     $headerQuery[] = 'Authorization: OAuth '.$dataContent->access_token;
     $headerQuery[] = 'Content-Length: '.strlen($body);

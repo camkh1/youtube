@@ -16,6 +16,8 @@ if(!empty($_GET['id'])):
     if(!file_exists($blogEdit) && file_exists($search_found)) {
         if (!copy($search_found, $blogEdit)) {
             echo "failed to copy $file...\n";
+        } else {
+            unlink($search_found);
         }
     }
 endif;

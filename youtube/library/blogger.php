@@ -919,9 +919,6 @@ HTML;
                 'span'=>'51.044069,82.617188',
             );
         }
-        if(!empty($dataContent->titleLink)) {
-            $dataBody->titleLink = $dataContent->titleLink;
-        }
         $dataBody->labels = [$dataContent->label];
         $body = json_encode($dataBody);
 
