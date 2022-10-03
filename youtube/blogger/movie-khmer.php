@@ -210,7 +210,7 @@ foreach ($html->find('.video-item') as $e) {
             /*End search list from google*/
             /*get all video from link*/
             if(!empty($numid[1]) && !empty($sp)) {
-                for ($n=0; $n < intval($part); $n++) {
+                for ($n=0; $n < count($sp); $n++) {
                     $setNum = $n+1; 
                     $glink = $sp[$n];
                     echo @$sp[$n]. ' - ' .$n.' <br/>';
