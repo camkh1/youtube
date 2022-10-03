@@ -23,7 +23,6 @@ class blogger extends file {
             $title = $html->find('title', 0)->innertext;
         }
         $postTitle = $title;
-        echo 33333;die;
         $list_id = $this->getsitecontent($html, $videotype);
         var_dump($list_id);die;
         if (preg_match('/og:image/', $html)) {
