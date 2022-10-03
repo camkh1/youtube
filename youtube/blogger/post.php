@@ -91,11 +91,12 @@ $blogger = new blogger();
                     $dataContent->title    = $json->title;        
                     $dataContent->bodytext = $json->body;
                     $dataContent->label    = $json->label;
+                    $dataContent->titleLink    = $json->uniq_id;
                     $info = json_decode($_SESSION['tokenSessionKey']);
                     $dataContent->access_token = $info->access_token;
                     //$getpost               = $blogger->blogger_post($client,$dataContent);
                     $postobj = $blogger->postToBlogger($dataContent);
-                    $getpost = $postobj->id;
+                    $getpost = @$postobj->id;
                     /*Create CSV file for update later*/
                     if (!file_exists(dirname(__FILE__) . '/../uploads/blogger')) {
                         mkdir(dirname(__FILE__) . '/../uploads/blogger', 0700);
@@ -105,9 +106,9 @@ $blogger = new blogger();
                     }
                     $uploadPath = dirname(__FILE__) . '/../uploads/blogger/posts/';
                     if(empty($g_bid)) {
-                        if(!empty($vdoInfo->uniq_id)) {
+                        if(!empty($json->uniq_id)) {
                             $getp_id = $getpost;
-                            $_SESSION['post_id'] = $vdoInfo->uniq_id;
+                            $_SESSION['post_id'] = $json->uniq_id;
                             $handle = fopen($uploadPath.$_SESSION['post_id'].'.csv', "w");
                             fputcsv($handle, array($bids->bid,$getpost));
                             fclose($handle);
@@ -127,7 +128,7 @@ $blogger = new blogger();
                                 'list'     => $vdoInfo->list,
                                 'file_name'     => $vdoInfo->file_name,
                                 'link'     => $vdoInfo->link,
-                                'bid'     => $vdoInfo->uniq_id,
+                                'bid'     => $json->uniq_id,
                             );
                             $upload_path = dirname(__FILE__) . '/../uploads/posts/' .$_SESSION['fsite'].'/';
                             $csv = $file->json($upload_path,$vdoInfo->file_name, $post_data,'update');
