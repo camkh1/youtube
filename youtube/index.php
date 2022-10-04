@@ -11,7 +11,6 @@ if (!empty($_SESSION['tokenSessionKey'])) {
 } else {
     $isLogin = true;
 }
-echo @$_COOKIE["email"];
 if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     $email = $_COOKIE["email"];
     $codeMa = 'code=&quot;&quot;;code+=&quot;URL GOTO=http://localhost/youtube/youtube/login.php?back=http%3A%2F%2Flocalhost%2Fyoutube%2Fyoutube%2Findex.php\n&quot;;code+=&quot;WAIT SECONDS=10\n&quot;;code+=&quot;TAG POS=1 TYPE=DIV ATTR=TXT:camkh13@gmail.com\n&quot;;iimPlayCode(codedefault2+code);';
@@ -156,7 +155,7 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
         <div id="loaderimg" class=""><img align="middle" valign="middle" src="http://2.bp.blogspot.com/-_nbwr74fDyA/VaECRPkJ9HI/AAAAAAAAKdI/LBRKIEwbVUM/s1600/splash-loader.gif"></div>
         Please wait...
     </div> 
-    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var emil = &quot;<?php @$_COOKIE["email"];?>&quot;,url_login = &quot;<?php @$urlLogin;?>&quot;;var codedefault1=&quot;TAB CLOSEALLOTHERS\n SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 100\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var codedefault2=&quot;SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 10\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);</code>
+    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var emil = &quot;<?php echo @$_COOKIE["email"];?>&quot;,url_login = &quot;<?php echo @$urlLogin;?>&quot;;var codedefault1=&quot;TAB CLOSEALLOTHERS\n SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 100\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var codedefault2=&quot;SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 10\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);</code>
     <code id="codeB" style="width:300px;overflow:hidden;display:none"></code>
     <script type="text/javascript" src="<?php echo base_url; ?>assets/js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url; ?>assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
