@@ -11,6 +11,7 @@ if (!empty($_SESSION['tokenSessionKey'])) {
 } else {
     $isLogin = true;
 }
+echo @$_COOKIE["email"];
 if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     $email = $_COOKIE["email"];
     $codeMa = 'code=&quot;&quot;;code+=&quot;URL GOTO=http://localhost/youtube/youtube/login.php?back=http%3A%2F%2Flocalhost%2Fyoutube%2Fyoutube%2Findex.php\n&quot;;code+=&quot;WAIT SECONDS=10\n&quot;;code+=&quot;TAG POS=1 TYPE=DIV ATTR=TXT:camkh13@gmail.com\n&quot;;iimPlayCode(codedefault2+code);';
