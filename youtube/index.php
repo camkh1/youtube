@@ -13,8 +13,7 @@ if (!empty($_SESSION['tokenSessionKey'])) {
 }
 if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     $email = $_COOKIE["email"];
-    $code = 'code = "";code+= "URL GOTO='.$urlLogin.'\n";code+="WAIT SECONDS=5\n";code+="TAG POS=1 TYPE=DIV ATTR=TXT:'.$email.'\n";iimPlayCode(codedefault2+code);';
-    $codeMa = htmlentities($code);
+    $codeMa = 'code=&quot;&quot;;code+=&quot;URL GOTO=http://localhost/youtube/youtube/login.php?back=http%3A%2F%2Flocalhost%2Fyoutube%2Fyoutube%2Findex.php\n&quot;;code+=&quot;WAIT SECONDS=10\n&quot;;code+=&quot;TAG POS=1 TYPE=DIV ATTR=TXT:camkh13@gmail.com\n&quot;;iimPlayCode(codedefault2+code);';
 } else {
     if(!empty($isLogin)) {
         header('Location: ' . $urlLogin);
@@ -224,7 +223,7 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
         <?php endif;?>
     </script>
  <?php if(!empty($isLogin) && !empty($codeMa)):?>
-    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var contents=null,images=null,groups=null,setIdAccout=null,postingOn=0,total=<?php echo @$total;?>;var codedefault1=&quot;TAB CLOSEALLOTHERS\n SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 100\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var codedefault2=&quot;SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 10\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);<?php echo @$codeMa;?>iimPlay('CODE:WAIT SECONDS=0');</code>
+    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault1=&quot;TAB CLOSEALLOTHERS\n SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 100\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var codedefault2=&quot;SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 10\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);<?php echo @$codeMa;?></code>
 <script type="text/javascript">
         function getattra(e) {
             $("#singerimageFist").val(e);
