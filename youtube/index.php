@@ -20,7 +20,7 @@ if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
         header('Location: ' . $urlLogin);
     }
 }
-die;
+
 if(!empty($_SESSION['back'])) {
     header('Location: ' . $_SESSION['back']);
 }
