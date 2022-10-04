@@ -13,7 +13,7 @@ if (!empty($_SESSION['tokenSessionKey'])) {
 }
 if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     $email = $_COOKIE["email"];
-    $code = 'code = "";code+= "URL GOTO='.$urlLogin.'\n";code+="TAG POS=1 TYPE=DIV ATTR=TXT:'.$email.'\n";';
+    $code = 'code = "";code+= "URL GOTO='.$urlLogin.'\n";code+="WAIT SECONDS=5\n";code+="TAG POS=1 TYPE=DIV ATTR=TXT:'.$email.'\n";iimPlayCode(codedefault2+code);';
     $codeMa = htmlentities($code);
 } else {
     if(!empty($isLogin)) {
