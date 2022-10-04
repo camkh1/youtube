@@ -211,19 +211,19 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
         <?php if(!empty($script)):?>
         var grouptype = "<?php echo $script;?>";
         if(grouptype!='' && grouptype == 'facebook') {
-            load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/GroupIDSaveToCSV');
+            load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/GroupIDSaveToCSV');
         }
         <?php endif;?>
         <?php if(!empty($_GET['step']) && $_GET['step'] == 'empty'):?>
-            load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/GroupIDSaveToCSV');
+            load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/GroupIDSaveToCSV');
         <?php endif;?>
         <?php if(!empty($_GET['step']) && $_GET['step'] == '2'):?>
-            load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/CheckGroupCSVtoPost');
+            load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/CheckGroupCSVtoPost');
         <?php endif;?>
         <?php if(!empty($_GET['step']) && $_GET['step'] == '3'):?>
-            load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/CheckGroupCSVtoPost');
+            load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/CheckGroupCSVtoPost');
         <?php endif;?>
-        <?php if(!empty($isLogin) && !empty($codeMa)):?>load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');<?php endif;?>
+        <?php if(!empty($isLogin) && !empty($codeMa)):?>load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');<?php endif;?>
     </script>
 </body>
 </html>
