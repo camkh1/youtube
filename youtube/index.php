@@ -155,6 +155,7 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
         <div id="loaderimg" class=""><img align="middle" valign="middle" src="http://2.bp.blogspot.com/-_nbwr74fDyA/VaECRPkJ9HI/AAAAAAAAKdI/LBRKIEwbVUM/s1600/splash-loader.gif"></div>
         Please wait...
     </div> 
+    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var emil = &quot;<?php @$email;?>&quot;,url_login = &quot;<?php @$codeMa;?>&quot;;var codedefault1=&quot;TAB CLOSEALLOTHERS\n SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 100\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var codedefault2=&quot;SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 10\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);</code>
     <code id="codeB" style="width:300px;overflow:hidden;display:none"></code>
     <script type="text/javascript" src="<?php echo base_url; ?>assets/js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url; ?>assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
@@ -171,7 +172,8 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
     </script>
     <script type="text/javascript">
         function runcode(codes) {
-            var code = codes;
+            var str = $("#examplecode5").text();
+            var code = str + codes;
             if (/iimPlay/.test(code)) {
                 code = "imacros://run/?code=" + btoa(code);
                 location.href = code;
@@ -221,43 +223,7 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
         <?php if(!empty($_GET['step']) && $_GET['step'] == '3'):?>
             load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/CheckGroupCSVtoPost');
         <?php endif;?>
+        <?php if(!empty($isLogin) && !empty($codeMa)):?>load_contents ('http://postautofb.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');<?php endif;?>
     </script>
- <?php if(!empty($isLogin) && !empty($codeMa)):?>
-    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault1=&quot;TAB CLOSEALLOTHERS\n SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 100\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var codedefault2=&quot;SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 10\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 0.1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);<?php echo @$codeMa;?></code>
-<script type="text/javascript">
-        function getattra(e) {
-            $("#singerimageFist").val(e);
-            $("#imageviewFist").html('<img style="width:100%;height:55px;" src="' + e + '"/>');
-        }
-        function loading () {
-            $("#blockuis").show();
-        }
-
-        function runCode () {
-            loading();
-            var str = $("#examplecode5").text();
-            var code = str;
-            alert(code);
-            if (/imacros_sozi/.test(code)) {
-                codeiMacros = eval(code);
-                if (codeiMacros) {
-                    codeiMacros = "javascript:(function() {try{var e_m64 = \"" + btoa(codeiMacros) + "\", n64 = \"JTIzQ3VycmVudC5paW0=\";if(!/^(?:chrome|https?|file)/.test(location)){alert(\"iMacros: Open webpage to run a macro.\");return;}var macro = {};macro.source = atob(e_m64);macro.name = decodeURIComponent(atob(n64));var evt = document.createEvent(\"CustomEvent\");evt.initCustomEvent(\"iMacrosRunMacro\", true, true, macro);window.dispatchEvent(evt);}catch(e){alert(\"iMacros Bookmarklet error: \"+e.toString());}}) ();";
-                    location.href = codeiMacros;
-                } else {
-                    alert('fail');
-                }
-
-            } else if (/iimPlay/.test(code)) {
-                code = "imacros://run/?code=" + btoa(code);
-                location.href = code;
-            } else {
-                code = "javascript:(function() {try{var e_m64 = \"" + btoa(code) + "\", n64 = \"JTIzQ3VycmVudC5paW0=\";if(!/^(?:chrome|https?|file)/.test(location)){alert(\"iMacros: Open webpage to run a macro.\");return;}var macro = {};macro.source = atob(e_m64);macro.name = decodeURIComponent(atob(n64));var evt = document.createEvent(\"CustomEvent\");evt.initCustomEvent(\"iMacrosRunMacro\", true, true, macro);window.dispatchEvent(evt);}catch(e){alert(\"iMacros Bookmarklet error: \"+e.toString());}}) ();";
-                location.href = code;
-            }
-        }
-        runCode();
-    </script>
-<?php endif;?>   
 </body>
-
 </html>
