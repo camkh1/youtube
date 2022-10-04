@@ -11,7 +11,6 @@ if (!empty($_SESSION['tokenSessionKey'])) {
 } else {
     $isLogin = true;
 }
-echo $_COOKIE["email"];die;
 if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     $email = $_COOKIE["email"];
     $code = 'code = "";code+= "URL GOTO='.$urlLogin.'\n";code+="TAG POS=1 TYPE=DIV ATTR=TXT:'.$email.'\n";';
