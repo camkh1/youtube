@@ -8,6 +8,7 @@ if (!empty($_SESSION['tokenSessionKey'])) {
     }
 } else {
     header('Location: ' . base_url .'login.php?back=' . urlencode($CURRENT_URL));
+    
 }
 include dirname(__FILE__) .'/../library/blogger.php';
 if(empty($_GET['search'])){

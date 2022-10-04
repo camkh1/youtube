@@ -45,6 +45,14 @@ if (isset($_GET['code'])) {
       $email = $data['payload']['email'];
       $_SESSION['user_id'] = $data['payload']['sub'];
       $_SESSION['email'] = $email;
+
+      // Get Current date, time
+        $current_time = time();
+        $current_date = date("Y-m-d H:i:s", $current_time);
+
+        // Set Cookie expiration for 1 month
+        $cookie_expiration_time = $current_time + (30 * 24 * 60 * 60);  // for 1 month
+        setcookie('email', $email, $cookie_expiration_time);
     }
   }
   if(!empty($_GET['back'])) {
