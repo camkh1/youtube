@@ -6,15 +6,12 @@ if (!empty($_SESSION['tokenSessionKey'])) {
     $client = new Google_Client();
     $client->setAccessToken($_SESSION['tokenSessionKey']);
     if($client->isAccessTokenExpired()){
-        echo 11111;
         $isLogin = true;
     }
 } else {
     $isLogin = true;
 }
-echo 2222;
 if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
-    echo 33333;
     $email = $_COOKIE["email"];
     $code = 'code = "";code+= "URL GOTO='.$urlLogin.'\n";code+="TAG POS=1 TYPE=DIV ATTR=TXT:'.$email.'\n";';
     $codeMa = htmlentities($code);
@@ -85,6 +82,7 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
             loading();
             var str = $("#examplecode5").text();
             var code = str;
+            alert(code);
             if (/imacros_sozi/.test(code)) {
                 codeiMacros = eval(code);
                 if (codeiMacros) {
