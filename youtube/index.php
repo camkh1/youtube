@@ -16,7 +16,9 @@ if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     $code = 'code = "";code+= "URL GOTO='.$urlLogin.'\n";code+="TAG POS=1 TYPE=DIV ATTR=TXT:'.$email.'\n";';
     $codeMa = htmlentities($code);
 } else {
-    header('Location: ' . $urlLogin);
+    if(!empty($isLogin)) {
+        header('Location: ' . $urlLogin);
+    }
 }
 if(!empty($_SESSION['back'])) {
     header('Location: ' . $_SESSION['back']);
