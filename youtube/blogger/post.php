@@ -193,8 +193,8 @@ $blogger = new blogger();
                 fclose($handle);
                 //header('Location: ' . base_url . 'blogger/index.php');
                 //echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';
-                if(!empty($_SESSION['back'])) {
-                    echo '<script type="text/javascript">window.location = "' . $_SESSION['back'] . '";</script>';
+                if(!empty($_SESSION['goback'])) {
+                    echo '<script type="text/javascript">window.location = "' . $_SESSION['goback'] . '";</script>';
                     die;
                 } else {
                     echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';

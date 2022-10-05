@@ -171,8 +171,8 @@ $blogger = new blogger();
                 echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/edit.php?do=post&id=' . $postNext . '";</script>';
             }
             if(1 == count($countPosted)) {
-                if(!empty($_SESSION['back'])) {
-                    echo '<script type="text/javascript">window.location = "' . $_SESSION['back'] . '";</script>';
+                if(!empty($_SESSION['goback'])) {
+                    echo '<script type="text/javascript">window.location = "' . $_SESSION['goback'] . '";</script>';
                     die;
                 } else {
                     echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';
