@@ -192,7 +192,15 @@ $blogger = new blogger();
                 fputcsv($handle, array('status',$status));
                 fclose($handle);
                 //header('Location: ' . base_url . 'blogger/index.php');
-                echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';
+                //echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';
+                if(!empty($_SESSION['back'])) {
+                    echo '<script type="text/javascript">window.location = "' . $_SESSION['back'] . '";</script>';
+                    die;
+                } else {
+                    echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';
+                    die;
+                    //header('Location: ' . base_url . 'blogger/index.php');
+                }
             }           
             exit();
             /*End Update*/

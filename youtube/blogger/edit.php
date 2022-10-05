@@ -171,7 +171,14 @@ $blogger = new blogger();
                 echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/edit.php?do=post&id=' . $postNext . '";</script>';
             }
             if(1 == count($countPosted)) {
-                header('Location: ' . base_url . 'blogger/index.php');
+                if(!empty($_SESSION['back'])) {
+                    echo '<script type="text/javascript">window.location = "' . $_SESSION['back'] . '";</script>';
+                    die;
+                } else {
+                    echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/index.php";</script>';
+                    die;
+                    //header('Location: ' . base_url . 'blogger/index.php');
+                }
             }           
             exit();
             /*End Update*/

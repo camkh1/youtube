@@ -9,7 +9,7 @@ $context = stream_context_create(array('ssl'=>array(
     'verify_peer' => false, 
     "verify_peer_name"=>false
     )));
-
+unset($_SESSION['back']);
 libxml_set_streams_context($context);
 $html = file_get_html(get_from_feed);
 $i = 0;
@@ -378,6 +378,7 @@ foreach ($html->find('.video-item') as $e) {
         $file_name = 'post-action.json';
         $jsonPost = $file->json($upload_path,$file_name, $dataPost);
         $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
+        $_SESSION['back'] = base_url . '/close.php';
         if(file_exists($upload_path.$checkForDup)) {
             unlink($upload_path.$checkForDup);
             echo $checkForDup;
