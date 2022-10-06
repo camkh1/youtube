@@ -9,7 +9,7 @@ $context = stream_context_create(array('ssl'=>array(
     'verify_peer' => false, 
     "verify_peer_name"=>false
     )));
-unset($_SESSION['back']);
+unset($_SESSION['goback']);
 libxml_set_streams_context($context);
 $html = file_get_html(get_from_feed);
 $i = 0;
