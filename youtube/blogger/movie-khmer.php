@@ -124,11 +124,14 @@ foreach ($html->find('.video-item') as $e) {
             echo 'exist<br/>';
             $current = date("Y-m-d");
             $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
-            /*End get all video from link*/
+            /*End get all video from link*/            
             if($current == $date) {
                 continue;
             } else {
                 $vdoInfo = $file->getFileContent($upload_path.$checkForDup,'json');
+                if(count($vdoInfo->list) == $part) {
+                    continue;
+                }             
                 $uniq_id = $vdoInfo->pid;
                 $bid = $vdoInfo->bid;
                 $_SESSION['id_edit'] = $vdoInfo->bid;
