@@ -378,7 +378,7 @@ foreach ($html->find('.video-item') as $e) {
         $file_name = 'post-action.json';
         $jsonPost = $file->json($upload_path,$file_name, $dataPost);
         $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
-        $_SESSION['goback'] = base_url . '/close.php';
+        $_SESSION['goback'] = base_url . 'close.php';
         if(file_exists($upload_path.$checkForDup)) {
             unlink($upload_path.$checkForDup);
             echo $checkForDup;
