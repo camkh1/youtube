@@ -224,7 +224,9 @@ if(!empty($_POST['blogID']) && !empty($_POST['ch'])) {
         <?php if(!empty($_GET['step']) && $_GET['step'] == '3'):?>
             load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/CheckGroupCSVtoPost');
         <?php endif;?>
-        <?php if(!empty($_COOKIE["email"]) && !empty($isLogin)) :?>load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');<?php endif;?>
+        <?php if(!empty($_COOKIE["email"]) && !empty($isLogin)) :?>
+        //load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');
+    <?php endif;?>
     </script>
 </body>
 </html>

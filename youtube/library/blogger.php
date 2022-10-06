@@ -109,7 +109,10 @@ class blogger extends file {
     }
     public function getsitecontent($html, $videotype = '')
     {
-        if (preg_match('/Blog1/', $html)) {
+        if(!empty($html->find('.hentry .eplister'))) {
+            $ep = $this->eplister($html->find('.hentry .eplister ul',0));
+            $list_id = $this->getList($ep);
+        } else if (preg_match('/Blog1/', $html)) {
             foreach ($html->find('#Blog1') as $article) {
                 $content = $article;
             }
@@ -1268,5 +1271,39 @@ HTML;
         }
         
         //return $id; 
+    }
+    public function eplister($ep)
+    {
+        $listArr = array();
+        foreach ($ep->find('li') as $article) {
+            $link = $article->find('a',0)->href;
+            $num = (int) $article->find('.epl-num',0)->plaintext;
+            $listArr[($num-1)] = $link;
+        }
+        return $listArr;
+    }
+    public function getList($urlList)
+    {
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+        $list_id = array();
+        for ($i=0; $i < count($urlList); $i++) { 
+            $link = $urlList[$i];
+            $con = file_get_html($link, false, stream_context_create($arrContextOptions));
+            $code = $con->find('.player-embed iframe', 0)->src;
+            $data_list = $this->get_video_id($code);
+            $v_id      = $data_list['vid'];
+            $v_id      = strtok($v_id, '?');
+            $v_type    = $data_list['vtype'];
+            $list_id[($i+1)] = array(
+                'list'  => $v_id,
+                'vtype' => $v_type,
+            );
+        }
+        return $list_id;
     }
 }
