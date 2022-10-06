@@ -109,10 +109,7 @@ class blogger extends file {
     }
     public function getsitecontent($html, $videotype = '')
     {
-        if(!empty($html->find('.hentry .eplister'))) {
-            $ep = $this->eplister($html->find('.hentry .eplister ul',0));
-            $list_id = $this->getList($ep);
-        } else if (preg_match('/Blog1/', $html)) {
+        if (preg_match('/Blog1/', $html)) {
             foreach ($html->find('#Blog1') as $article) {
                 $content = $article;
             }
@@ -124,7 +121,10 @@ class blogger extends file {
             $content = $html;
         }
         $list_id = array();
-        if (preg_match('/videogallery-con/', $content)) {
+        if(!empty($html->find('.hentry .eplister'))) {
+            $ep = $this->eplister($html->find('.hentry .eplister ul',0));
+            $list_id = $this->getList($ep);
+        } else if (preg_match('/videogallery-con/', $content)) {
             $i = 0;
             foreach ($content->find('.videogallery-con iframe') as $e) {
                 $i++;
