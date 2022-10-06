@@ -143,7 +143,7 @@ foreach ($html->find('.video-item') as $e) {
                             "verify_peer_name"=>false,
                         ),
                     ); 
-                    for ($n=0; $n < intval($part); $n++) {
+                    for ($n=0; $n < count($sp); $n++) {
                         $setNum = $n+1; 
                         $glink = $sp[$n];
                         if(intval($setNum) <=count(@$vdoInfo->list)) {

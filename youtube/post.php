@@ -1,7 +1,7 @@
 <?php
 include 'top.php';
 $isLogin = false;
-$_SESSION['back'] = base_url . '/blogger/movie-khmer.php';
+$_SESSION['back'] = base_url . 'blogger/movie-khmer.php';
 $urlLogin = base_url .'login.php?back=' . urlencode($_SESSION['back']);
 if (!empty($_SESSION['tokenSessionKey'])) {
     $client = new Google_Client();
