@@ -145,28 +145,32 @@ foreach ($html->find('.video-item') as $e) {
                     ); 
                     for ($n=0; $n < count($sp); $n++) {
                         $setNum = $n+1; 
-                        $glink = $sp[$n];
-                        if(intval($setNum) <=count(@$vdoInfo->list)) {
-                            if($vdoInfo->list[$n]->part == $setNum) {
-                                if(!empty($vdoInfo->list[$n]->vid)) {
-                                    $vdoList[$setNum] = array(
-                                        'vid'  => $vdoInfo->list[$n]->vid,
-                                        'vtype' => $vdoInfo->list[$n]->vtype
-                                    );
-                                } else {
-                                    //echo 'not found <br/>';
-                                    $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
-                                    $code = $con->find('.embed-responsive-item iframe', 0)->src;
-                                    $data_list = $site->get_video_id($code);
-                                    $vdoList[$setNum] = $data_list;
+                        $glink = @$sp[$n];
+                        if(!empty($sp[$n])) {
+                            if(intval($setNum) <=count(@$vdoInfo->list)) {
+                                if($vdoInfo->list[$n]->part == $setNum) {
+                                    if(!empty($vdoInfo->list[$n]->vid)) {
+                                        $vdoList[$setNum] = array(
+                                            'vid'  => $vdoInfo->list[$n]->vid,
+                                            'vtype' => $vdoInfo->list[$n]->vtype
+                                        );
+                                    } else {
+                                        //echo 'not found <br/>';
+                                        $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                                        $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                                        $data_list = $site->get_video_id($code);
+                                        $vdoList[$setNum] = $data_list;
+                                    }
                                 }
+                            } else {
+                                //echo $setNum .' get mew <br/>';
+                                $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                                $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                                $data_list = $site->get_video_id($code);
+                                $vdoList[$setNum] = $data_list;
                             }
                         } else {
-                            //echo $setNum .' get mew <br/>';
-                            $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
-                            $code = $con->find('.embed-responsive-item iframe', 0)->src;
-                            $data_list = $site->get_video_id($code);
-                            $vdoList[$setNum] = $data_list;
+                            continue;
                         }
                     }
                 }
@@ -423,6 +427,8 @@ foreach ($html->find('.video-item') as $e) {
     }
     $i++;
 }
+echo '<script language="javascript" type="text/javascript">window.setTimeout( function(){window.location = "'.base_url . 'close.php";}, 1000 );</script>';
+exit();
 function getnext($plink,$sp)
 {
     $gl = file_get_html($plink);
