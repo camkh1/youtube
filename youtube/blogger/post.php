@@ -80,6 +80,31 @@ $blogger = new blogger();
             foreach ($json->blogid as $bids) {
                 $i++;           
                 if ( $bids->bid == $id ) {
+
+                    /*search for duplicate post*/
+                    $tCheck = explode('||', $json->title);
+                    $Label_search = '';
+                    if(!empty($tCheck[1])) {
+                        $search_title = trim($tCheck[1]);
+                    }
+                    if(preg_match('/chinese movies/', $json->label)) {
+                        $Label_search = 'chinese movies';
+                    }
+                    if(preg_match('/Thai - Khmer/', $json->label)) {
+                        $Label_search = 'Thai - Khmer';
+                    }
+                    if(preg_match('/Khmer Movie/', $json->label)) {
+                        $Label_search = 'Khmer Movie';
+                    }
+                    if(preg_match('/Korean Movies/', $json->label)) {
+                        $Label_search = 'Korean Movies';
+                    }
+                    if(!empty($search_title)) {
+                        $pid = $blogger->searchPost($search_title,$bids->bid,$Label_search);
+                    }
+                    var_dump($pid);
+                    die;
+                    /*End search for duplicate post*/
                     /*post to Blog*/
                     $dataContent          = new stdClass();
                     $date = date("c");

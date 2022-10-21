@@ -1238,15 +1238,35 @@ HTML;
         );
 
         if(!empty($label)) {
-            $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json';
+            //https://www.blogger.com/feeds/7798654909692515255/posts/default/-/chinese%20movies?alt=json&max-results=1&q=Chak%20Khok%20Achhak%20Riyeak
+            //$link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json';
+            $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default/-/'.$label.'?alt=json&max-results='.$max.'&q='.urlencode($keyWord).'&start-index='.$start;
             $arrContextOptions=array(
                 "ssl"=>array(
                     "verify_peer"=>false,
                     "verify_peer_name"=>false,
                 ),
             ); 
-            $response = file_get_contents($link_blog, false, $context);
-            $html = json_decode($response);
+            $response = json_decode(file_get_contents($link_blog, false, $context));
+            if(!empty($response->feed->entry)) {
+                foreach (@$response->feed->entry as $key => $entry) {
+                    $data_id = $entry->id->{'$t'};
+                    $title = @$entry->title->{'$t'};
+                    $title = str_replace('[', '', $title);
+                    $title = str_replace(']', '', $title);
+                    $title = str_replace('(', '', $title);
+                    $title = str_replace(')', '', $title);
+                    $title = str_replace('||', '', $title);
+                }
+            }
+            if(!empty($data_id)) {
+                $id = explode('.post-', $data_id);
+                if(!empty($id[1])) {
+                    $id = $id[1];
+                } else {
+                    $id = '';
+                }
+            }
         } else {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.urlencode($keyWord).'&start-index='.$start;
             $arrContextOptions=array(
