@@ -82,10 +82,11 @@ $blogger = new blogger();
                 if ( $bids->bid == $id ) {
 
                     /*search for duplicate post*/
-                    $tCheck = explode('||', $json->title);
+                    $tCheck = explode(' id ', $json->title);
+                    var_dump($tCheck);
                     $Label_search = '';
-                    if(!empty($tCheck[1])) {
-                        $search_title = trim($tCheck[1]);
+                    if(!empty($tCheck[0])) {
+                        $search_title = trim($tCheck[0]);
                     }
                     if(preg_match('/chinese movies/', $json->label)) {
                         $Label_search = 'chinese movies';
@@ -102,15 +103,11 @@ $blogger = new blogger();
                     if(!empty($search_title)) {
                         $pid = $blogger->searchPost($search_title,$bids->bid,$Label_search);
                     }
-                    var_dump($pid);
-                    die;
                     /*End search for duplicate post*/
                     /*post to Blog*/
                     $dataContent          = new stdClass();
                     $date = date("c");
                     $dataContent->setdate = $date;      
-                    $dataContent->editpost = false;
-                    $dataContent->pid      = 0;
                     $dataContent->customcode = '';
                     $dataContent->bid     = $bids->bid;
                     $dataContent->title    = $json->title;        
@@ -120,6 +117,13 @@ $blogger = new blogger();
                     $info = json_decode($_SESSION['tokenSessionKey']);
                     $dataContent->access_token = $info->access_token;
                     //$getpost               = $blogger->blogger_post($client,$dataContent);
+                    if(!empty($pid['pid'])) {
+                        $dataContent->editpost = 1;
+                        $dataContent->pid      = $pid['pid'];
+                    } else {
+                        $dataContent->editpost = false;
+                        $dataContent->pid      = 0;
+                    }
                     $postobj = $blogger->postToBlogger($dataContent);
                     $getpost = @$postobj->id;
                     /*Create CSV file for update later*/
