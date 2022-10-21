@@ -187,9 +187,7 @@ foreach ($html->find('.video-item') as $e) {
         $sp = getnext($plink,$sps);
         echo 'count video list: ' . count($sp).'<br/>';
         /*save file to local*/
-        $file_name = preg_replace("/[^a-zA-Z0-9]+/", " ", trim($title));
-        $file_name = preg_replace('/\s+/', '-', $file_name);
-        $file_name = strtolower( $file_name );
+        $file_name = $checkForDup;
         if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'])) {
             mkdir(dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'], 0700);
         }
@@ -318,7 +316,6 @@ foreach ($html->find('.video-item') as $e) {
                     // }
                     
                     if(!empty($glink)) {
-                        echo '33333333';
                         $con = file_get_html($sp[$n], false, $context);
                         $code = $con->find('section.content iframe', 0)->src;
                         $data_list = $site->get_video_id($code);
@@ -390,15 +387,13 @@ foreach ($html->find('.video-item') as $e) {
         $label_add      = addslashes(@$New_label);
 
         /*save file to local*/
-        $file_name = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
-        $file_name = preg_replace('/\s+/', '-', $file_name);
-        $file_name = strtolower( $file_name );
+        $file_name = $checkForDup;
 
         if (!file_exists(dirname(__FILE__) . '/../uploads/posts/'.$host)) {
             mkdir(dirname(__FILE__) . '/../uploads/posts/'.$host, 0700);
         }
         $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$host.'/';
-        $file_post = $file_name = $setLabel .'-'. trim($file_name).'.json';
+        $file_post = $file_name = trim($file_name).'.json';
         $_SESSION['file_name'] = trim($file_name);
         $title = trim($title) . ' id ' . $uniq_id;
         $title = trim($title) . ' || part ' . '[ '.@count($viddata).' ]';
@@ -493,9 +488,6 @@ foreach ($html->find('.video-item') as $e) {
         }
         break;
         die;
-    }
-    if($i==0) {
-        break;
     }
     $i++;
 }
