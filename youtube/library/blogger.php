@@ -1225,6 +1225,18 @@ HTML;
         }
     }
     public function searchPost($keyWord='',$bid,$label='',$max=1,$start = 1){
+        $context = stream_context_create(
+            array(
+                "http" => array(
+                    "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+                ),
+                    "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                )
+            )
+        );
+
         if(!empty($label)) {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default/-/'.$label.'?max-results='.$max .'&start-index='.$start.'&alt=json';
             $arrContextOptions=array(
@@ -1233,7 +1245,7 @@ HTML;
                     "verify_peer_name"=>false,
                 ),
             ); 
-            $response = file_get_contents($link_blog, false, stream_context_create($arrContextOptions));
+            $response = file_get_contents($link_blog, false, $context);
             $html = json_decode($response);
         } else {
             $link_blog = 'https://www.blogger.com/feeds/'.$bid.'/posts/default?alt=json&max-results='.$max.'&q='.urlencode($keyWord).'&start-index='.$start;
@@ -1243,7 +1255,7 @@ HTML;
                     "verify_peer_name"=>false,
                 ),
             ); 
-            $response = json_decode(file_get_contents($link_blog, false, stream_context_create($arrContextOptions)));
+            $response = json_decode(file_get_contents($link_blog, false, $context));
             if(!empty($response->feed->entry)) {
                 foreach (@$response->feed->entry as $key => $entry) {
                     $data_id = $entry->id->{'$t'};

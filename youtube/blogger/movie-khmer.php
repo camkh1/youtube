@@ -11,35 +11,76 @@ $context = stream_context_create(array('ssl'=>array(
     )));
 unset($_SESSION['goback']);
 libxml_set_streams_context($context);
-$html = file_get_html(get_from_feed);
+$arrContextOptions=array(
+    "ssl"=>array(
+        "verify_peer"=>false,
+        "verify_peer_name"=>false,
+    ),
+);
+
+// $headers = @get_headers(get_from_feed);
+// var_dump($headers);
+// if(strpos($headers[0],'404') === false)
+// {
+//  echo get_from_feed;
+// }
+// die;
+$context = stream_context_create(
+    array(
+        "http" => array(
+            "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+        ),
+            "ssl"=>array(
+            "verify_peer"=>false,
+            "verify_peer_name"=>false,
+        )
+    )
+);
+$html = file_get_html(get_from_feed, false, $context);
 $i = 0;
 $creat_arr = array();
 $label = '';
 $isEnd = false;
 $LabelStatus = 'Continue';
+
 foreach ($html->find('.video-item') as $e) {
     $isEnd = false;
     $thumb = $e->find('.video-thumb img', 0)->src;
     $videoInfo = $e->find('.video-info a', 0)->innertext;
     $c = $e->find('.video-info .text-muted', 0)->plaintext;
-    $videoInfoArr = explode(' - ', $videoInfo);
-    if(!empty($videoInfoArr[0])) {
-        $title = trim($videoInfoArr[0]);
-    }
+    $videoInfoArr = explode('ភាគ ', $videoInfo);
     if(!empty($videoInfoArr[1])) {
         $part = $videoInfoArr[1];
-        $part = str_replace('part ', '', $part);
-        if (preg_match ( '/End/', $part )) {
+        $part = trim($part);
+        if (preg_match ( '/ចប់/', $part )) {
             $isEnd = true;
             $LabelStatus = 'End';
         }
-        $part = str_replace('End', '', $part);
+        $part = str_replace('ចប់', '', $part);
     }
 
     $link = $e->find('.video-info a', 0)->href;
     // $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/chub-pheak-jum-peak-sneah-hd-part-50end-video-1553686.html';
     // $part = 50;
-    echo '<a href="'.$link.'">'.$title.' - '.$part.' '.$c.'</a><br/>';
+    
+
+    /*get english title*/
+    preg_match("/khmer-lakhon-(.*?)(?:embed|-album-|-part-)|khmer-chinese-drama-(.*?)(?:embed|-album-|-part-)|khmer-thai-lakhorn-drama\/(.*?)(?:embed|-album-|-part-)|thai-lakhon-(.*?)(?:embed|-album-|-part-)|khmer-korean-drama-(.*?)(?:embed|-album-|-part-)/",$link,$matches);
+    if(!empty($matches[1])) {
+        $title = ucwords(str_replace('-', ' ', $matches[1]));
+        $setFile = $matches[1];
+    }
+    if(!empty($matches[2])) {
+        $title = ucwords(str_replace('-', ' ', $matches[2]));
+        $setFile = $matches[2];
+    }
+    if(!empty($matches[4])) {
+        $title = ucwords(str_replace('-', ' ', $matches[4]));
+        $setFile = $matches[4];
+    }
+    echo '<a href="'.$link.'">'.$videoInfoArr[0].' - '.$part.' '.$c.'</a><br/>';
+    echo $title.'<br/>';
+    /*ENd get english title*/
 
     /*set Label*/
     $LabelType = 'Short';
@@ -64,6 +105,30 @@ foreach ($html->find('.video-item') as $e) {
     if(preg_match('/India/', $c)) {
         $setLabel = 'India';
     }
+    if(preg_match('/India/', $c)) {
+        $setLabel = 'India';
+    }
+
+
+    if(preg_match('/រឿងភាគ/', $c)) {
+        $LabelType = 'Drama';
+    }
+    if(preg_match('/Thai Lakhon/', $c)) {
+        $LabelType = 'Drama';
+    }
+    if(preg_match('/រឿងភាគថៃ/', $c)) {
+        $setLabel = 'thai';
+    }
+    if(preg_match('/រឿងភាគខ្មែរ/', $c)) {
+        $setLabel = 'khmer';
+    }
+    if(preg_match('/រឿងភាគកូរ៉េ/', $c)) {
+        $setLabel = 'Korea';
+    }
+    if(preg_match('/រឿងភាគចិន/', $c)) {
+        $setLabel = 'china';
+    }
+    echo $c . ' = '. $setLabel.' - '.$LabelType.'<br/>';
     $Cates = $site->getLabelBySpec($setLabel ,$LabelType, $LabelStatus);
     /*End set Label*/
     /*for test*/
@@ -73,10 +138,10 @@ foreach ($html->find('.video-item') as $e) {
     // $part = 13;
     /*End for test*/
     if(!empty($link)) {
-        $checkForDup = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
-        $checkForDup = preg_replace('/\s+/', '-', $checkForDup);
-        $checkForDup = strtolower( $checkForDup );
-        $checkForDup = $setLabel .'-'. trim($checkForDup).'.json';
+        // $checkForDup = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
+        // $checkForDup = preg_replace('/\s+/', '-', $checkForDup);
+        // $checkForDup = strtolower( $checkForDup );
+        $checkForDup = $setLabel .'-'. trim($setFile).'.json';
         $parse = parse_url($link);
         $_SESSION['fsite'] = $host = explode('.', $parse['host'])[1];
         $_SESSION['url_id'] = $link;
@@ -102,11 +167,22 @@ foreach ($html->find('.video-item') as $e) {
         //     }
         // }
         /*End Check for post exist*/
-        $vdoList = array();      
-        $numid = explode('-video-', $link);        
-        $p = file_get_html($link);
-        $plink = $p->find('.content .card-text .text-uppercase', 0)->href;
-        $text = $p->find('.content .card-text .text-uppercase', 0)->plaintext;
+        preg_match("/-album-/",$link,$chpart);
+        if(!empty($chpart[0])) {
+            if($chpart[0] == '-album-') {
+                $plink = $link;
+            }
+        }
+        $vdoList = array();
+        if(empty($plink)) {        
+            $p = file_get_html($link, false, $context);
+            $plink = $p->find('.content .card-text .text-uppercase', 0)->href;
+            if($part>1 && empty($plink)) {
+                $p = file_get_html($link, false, $context);
+                $plink = $p->find('.content .card-text .text-uppercase', 0)->href;
+            }
+            $text = $p->find('.content .card-text .text-uppercase', 0)->plaintext;
+        }
         $sps = array();
         $sp = getnext($plink,$sps);
         echo 'count video list: ' . count($sp).'<br/>';
@@ -136,7 +212,7 @@ foreach ($html->find('.video-item') as $e) {
                 $bid = $vdoInfo->bid;
                 $_SESSION['id_edit'] = $vdoInfo->bid;
                 /*get all video from link*/
-                if(!empty($numid[1])) {
+                if(!empty($part)) {
                     $arrContextOptions=array(
                         "ssl"=>array(
                             "verify_peer"=>false,
@@ -156,7 +232,7 @@ foreach ($html->find('.video-item') as $e) {
                                         );
                                     } else {
                                         //echo 'not found <br/>';
-                                        $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                                        $con = file_get_html($glink, false, $context);
                                         $code = $con->find('.embed-responsive-item iframe', 0)->src;
                                         $data_list = $site->get_video_id($code);
                                         $vdoList[$setNum] = $data_list;
@@ -164,7 +240,7 @@ foreach ($html->find('.video-item') as $e) {
                                 }
                             } else {
                                 //echo $setNum .' get mew <br/>';
-                                $con = file_get_html($glink, false, stream_context_create($arrContextOptions));
+                                $con = file_get_html($glink, false, $context);
                                 $code = $con->find('.embed-responsive-item iframe', 0)->src;
                                 $data_list = $site->get_video_id($code);
                                 $vdoList[$setNum] = $data_list;
@@ -217,7 +293,7 @@ foreach ($html->find('.video-item') as $e) {
             // }
             /*End search list from google*/
             /*get all video from link*/
-            if(!empty($numid[1]) && !empty($sp)) {
+            if(!empty($part) && !empty($sp)) {
                 for ($n=0; $n < count($sp); $n++) {
                     $setNum = $n+1; 
                     $glink = @$sp[$n];
@@ -240,15 +316,11 @@ foreach ($html->find('.video-item') as $e) {
                     //     $data_list = $site->get_video_id($code);
                     //     $vdoList[$setNum] = $data_list;
                     // }
-                    $arrContextOptions=array(
-                        "ssl"=>array(
-                            "verify_peer"=>false,
-                            "verify_peer_name"=>false,
-                        ),
-                    );
+                    
                     if(!empty($glink)) {
-                        $con = file_get_html($sp[$n], false, stream_context_create($arrContextOptions));
-                        $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                        echo '33333333';
+                        $con = file_get_html($sp[$n], false, $context);
+                        $code = $con->find('section.content iframe', 0)->src;
                         $data_list = $site->get_video_id($code);
                         $vdoList[$setNum] = $data_list;
                     } else {
@@ -431,7 +503,18 @@ echo '<script language="javascript" type="text/javascript">window.setTimeout( fu
 exit();
 function getnext($plink,$sp)
 {
-    $gl = file_get_html($plink);
+    $context = stream_context_create(
+        array(
+            "http" => array(
+                "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+            ),
+                "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            )
+        )
+    );
+    $gl = file_get_html($plink, false, $context);
     foreach ($gl->find('.content .cover-item .cover-desc') as $k => $l) {
         $llink = $l->find('a', 0)->href;
         preg_match('/-part-(.*?)-video-/', $llink, $match);
@@ -448,6 +531,11 @@ function getnext($plink,$sp)
         $nl = $n->href;
         $nt = $n->title;
         if($nt =='Next Page') {
+            $nextpage = true;
+            $sp = getnext($nl,$sp);
+            break;
+        }
+        if($nt =='ទំព័របន្ទាប់') {
             $nextpage = true;
             $sp = getnext($nl,$sp);
             break;
