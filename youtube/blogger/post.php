@@ -83,11 +83,11 @@ $blogger = new blogger();
 
                     /*search for duplicate post*/
                     $tCheck = explode(' id ', $json->title);
-                    var_dump($tCheck);
                     $Label_search = '';
                     if(!empty($tCheck[0])) {
                         $search_title = trim($tCheck[0]);
                     }
+                    echo 'Title post: '. $search_title.'<br/>';
                     if(preg_match('/chinese movies/', $json->label)) {
                         $Label_search = 'chinese movies';
                     }

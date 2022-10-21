@@ -106,6 +106,12 @@ $blogger = new blogger();
             foreach ($json->blogid as $bids) {
                 $i++;                
                 if ( $bids->bid == $id ) {
+                    $tCheck = explode(' id ', $json->title);
+                    $Label_search = '';
+                    if(!empty($tCheck[0])) {
+                        $search_title = trim($tCheck[0]);
+                    }
+                    echo 'Title post: '. $search_title.'<br/>';
                     /*post to Blog*/                    
                     $pid = $file->searchForId($bids->bid, $arrSearch);
                     $dataContent          = new stdClass();

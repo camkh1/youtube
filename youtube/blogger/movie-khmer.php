@@ -238,8 +238,9 @@ foreach ($html->find('.video-item') as $e) {
                                 }
                             } else {
                                 //echo $setNum .' get mew <br/>';
+                                echo $glink.'<br/>';
                                 $con = file_get_html($glink, false, $context);
-                                $code = $con->find('.embed-responsive-item iframe', 0)->src;
+                                $code = $con->find('.content .card-body iframe', 0)->src;
                                 $data_list = $site->get_video_id($code);
                                 $vdoList[$setNum] = $data_list;
                             }
