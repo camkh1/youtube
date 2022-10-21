@@ -60,6 +60,7 @@ foreach ($html->find('.video-item') as $e) {
     }
 
     $link = $e->find('.video-info a', 0)->href;
+    //$link = 'https://www.video4khmer37.com/title/khmer-chinese-drama-see-u-again-album-10887-page-1.html';
     // $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/chub-pheak-jum-peak-sneah-hd-part-50end-video-1553686.html';
     // $part = 50;
     
@@ -132,12 +133,9 @@ foreach ($html->find('.video-item') as $e) {
     $Cates = $site->getLabelBySpec($setLabel ,$LabelType, $LabelStatus);
     /*End set Label*/
     /*for test*/
-    // $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/sneah-mun-thngai-licht-hd-part-13-video-1639897.html';
-    // $title = trim('Sneah Mun Thngai Licht [HD]');
-    // $setLabel = 'china';
-    // $part = 13;
     /*End for test*/
     if(!empty($link)) {
+        echo '<br/><br/><br/>==========================<br/>';
         // $checkForDup = preg_replace("/[^a-zA-Z0-9]+/", " ", $title);
         // $checkForDup = preg_replace('/\s+/', '-', $checkForDup);
         // $checkForDup = strtolower( $checkForDup );
@@ -194,11 +192,37 @@ foreach ($html->find('.video-item') as $e) {
         $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
         echo $checkForDup .' '. $link .'<br/>';
         $_SESSION['postFile'] = $upload_path.$checkForDup;
+        echo dirname(__FILE__).'<br/>';
+        echo $upload_path.$checkForDup;
+        if(file_exists($upload_path.$checkForDup)) {
+            echo '<br/>file_exists';
+            $current = date("Y-m-d");
+            $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
+            /*End get all video from link*/ 
+            $str = file_get_contents($upload_path.$checkForDup);
+            $jsonFile = json_decode($str);
+            if(count($sp) == count($jsonFile->list)) {
+                echo '<br/>list == list';
+            }
+            if($current == $date) {
+                echo '<br/>$current == $date';
+            } else {
+                echo '<br/>not $current == $date';
+            }
+        } else {
+            echo '<br/>not file_exists';
+        }
+        echo '<br/>';
         if(file_exists($upload_path.$checkForDup)) {
             echo 'exist<br/>';
             $current = date("Y-m-d");
             $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
-            /*End get all video from link*/            
+            /*End get all video from link*/
+            $str = file_get_contents($upload_path.$checkForDup);
+            $jsonFile = json_decode($str); 
+            if(count($sp) == count($jsonFile->list)) {
+                continue;
+            }    
             if($current == $date) {
                 continue;
             } else {
@@ -394,7 +418,7 @@ foreach ($html->find('.video-item') as $e) {
             mkdir(dirname(__FILE__) . '/../uploads/posts/'.$host, 0700);
         }
         $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$host.'/';
-        $file_post = $file_name = trim($file_name).'.json';
+        $file_post = $file_name = trim($file_name);
         $_SESSION['file_name'] = trim($file_name);
         $title = trim($title) . ' id ' . $uniq_id;
         $title = trim($title) . ' || part ' . '[ '.@count($viddata).' ]';
