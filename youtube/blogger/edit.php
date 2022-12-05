@@ -13,6 +13,13 @@ $upload_path = dirname(__FILE__) . '/../uploads/user/';
 $file_name = 'post.json';
 $file = new file();
 if(!empty($_GET['id'])) {
+    if(!empty($_GET['file'])) {
+        $parse = parse_url(get_from_feed);
+        $_SESSION['fsite'] = $host = explode('.', $parse['host'])[1];
+        $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
+        $_SESSION['file_name'] = $file_name = $_GET['file'];
+        //$getPostFile = $file->getFileContent($uploadpath.$filename);
+    } 
     $getPost = $file->getFileContent($upload_path.$file_name);
 }
 $getBlogId = $file->getBlogID();
@@ -36,6 +43,7 @@ $blogger = new blogger();
         $idblog    = @$_POST['idblog'];
         $_SESSION['id_edit']    = @$_POST['postid'];
         $idpost    = @$_POST['idpost'];
+        $uniq_id    = @$_POST['uniq_id'];
         $thumb     = @$_POST['imageid'];
         $videotype = @$_POST['videotype'];
         $title     = @$_POST['title'];
@@ -63,11 +71,12 @@ $blogger = new blogger();
             'image' => $thumb,
             'body' => $bodytext,
             'label' => $label_add,
+            'uniq_id' => $uniq_id,
         );
         $upload_path = dirname(__FILE__) . '/../uploads/user/';
         $file_name = 'post-action.json';
         $jsonPost = $file->json($upload_path,$file_name, $dataPost);
-        header('Location: ' . base_url . 'blogger/edit.php?do=post');
+        header('Location: ' . base_url . 'blogger/edit.php?do=post&id='.$uniq_id);
     }
     function getPost($id='')
     {
@@ -173,6 +182,28 @@ $blogger = new blogger();
             $upload_path = dirname(__FILE__) . '/../uploads/user/';
             $file_name = 'post-action.json';
             $jsonPost = $file->json($upload_path,$file_name, $dataPost);
+
+            /*update file post*/
+            $upload_path = dirname(__FILE__) . '/../uploads/posts/'.$_SESSION['fsite'].'/';
+            $file_post = $_SESSION['file_name'];
+            $vdoInfo = $file->getFileContent($upload_path.$file_post,'json');
+            $post_data = array(
+                'title'     => $json->title,
+                'type'     => 'vdolist',
+                'object_id' => $vdoInfo->object_id,
+                'pid' => $vdoInfo->pid,
+                'image' => array(
+                    'url'=>@$json->image,
+                    'upload_status'=>$vdoInfo->image->upload_status
+                ),
+                'label'     => @$json->label,
+                'list'     => @$vdoInfo->list,
+                'file_name'     => $vdoInfo->file_name,
+                'link'     => @$vdoInfo->link,
+                'bid'     => @$vdoInfo->bid,
+            );
+            $csv = $file->json($upload_path,$file_post, $post_data);
+            /*End update file post*/
             if(!empty($postNext)) {               
                 echo '<script type="text/javascript">window.location = "' . base_url . 'blogger/edit.php?do=post&id=' . $postNext . '";</script>';
             }
@@ -281,7 +312,14 @@ if (!empty($_POST['idpost']) && !empty($_POST['keyword'])) {
                                     <div class="col-md-10">
                                         <input type="hidden" class="form-control" name="postid" id="imageid" value="<?php echo @$_GET['id'];?>" />
                                         <input type="hidden" class="form-control" name="uniq_id" id="uniq_id" value="<?php echo @$_GET['id'];?>" />
-                                        <input type="text" class="form-control" name="title" id="title" value="<?php echo @$getPost->title?> || part <?php echo count($getPost->list);?>" />
+                                        <input type="text" class="form-control" name="title" id="title" value="<?php
+                                        $tCheck = explode(' id ', $getPost->title);
+                                        if(!empty($tCheck[0])):
+                                            $title = trim($tCheck[0]);
+                                        else:
+                                            $title = $getPost->title;
+                                        endif;
+                                         echo @$title;?> id <?php echo @$getPost->pid;?> || part <?php echo count($getPost->list);?>" />
                                     </div>                                                            
                                 </div>                         
                             </div>                         
@@ -291,10 +329,10 @@ if (!empty($_POST['idpost']) && !empty($_POST['keyword'])) {
                                         <label for="imageid">Image</label>
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="text" class="form-control" name="imageid" id="imageid" value="<?php echo @$getPost->image?>" />
+                                        <input type="text" class="form-control" name="imageid" id="imageid" value="<?php echo @$getPost->image->url;?>" />
                                     </div>
                                     <div class="col-md-5">
-                                        <img src="<?php echo @$getPost->image?>" />                                     
+                                        <img src="<?php echo @$getPost->image->url;?>" />                                     
                                     </div>                         
                                 </div>                         
                             </div>                         
@@ -352,7 +390,7 @@ if (!empty($_POST['idpost']) && !empty($_POST['keyword'])) {
                                     </div>
                                     <div class="col-md-10">
                                         <textarea onclick="this.focus(); this.select()" class="form-control" name="onyoutbueBody1" cols="5" rows="3"><?php
-                                        echo $blogger->getPlaylist($getPost->list,$getPost->title, $getPost->image);
+                                        echo $blogger->getPlaylist($getPost->list,$getPost->title, $getPost->image->url);
                                         ?></textarea>
                                     </div>
                                 </div>

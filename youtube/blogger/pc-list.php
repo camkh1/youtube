@@ -339,7 +339,7 @@ $data = checkDuplicate($bid,$label,$max,$page);
                                                         <a href="<?php echo base_url; ?>blogger/add.php?id=<?php echo @$value->bid; ?>&title=<?php echo urlencode(@$value->title);?>&img=<?php echo @$img;?>&l=<?php echo @urlencode($value->label);?>"><i class="icon-edit"></i> Add & Edit</a>
                                                     </li>
                                                     <li>
-                                                        <a href="<?php echo base_url; ?>blogger/edit.php?id=<?php echo @$value->bid; ?>"><i class="icon-edit"></i> Edit</a>
+                                                        <a href="<?php echo base_url; ?>blogger/edit.php?id=<?php echo @$value->pid; ?>&file=<?php echo @$value->file_name; ?>"><i class="icon-edit"></i> Edit</a>
                                                     </li>
                                                     <li>
                                                         <a href="<?php echo base_url; ?>blogger/delete.php?id=<?php echo @$pid; ?>&do=post"><span style="color: red;"><i class="icon-remove"></i> Remove</span></a>                                                    

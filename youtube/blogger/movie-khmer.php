@@ -60,7 +60,7 @@ foreach ($html->find('.video-item') as $e) {
     }
 
     $link = $e->find('.video-info a', 0)->href;
-    //$link = 'https://www.video4khmer37.com/title/khmer-chinese-drama-see-u-again-album-10887-page-1.html';
+    //$link = 'https://www.video4khmer37.com/title/khmer-korean-drama-om-nach-toek-prak-album-10934-page-1.html';
     // $link = 'https://www.video4khmer36.com/watch/khmer-chinese-drama/chub-pheak-jum-peak-sneah-hd-part-50end-video-1553686.html';
     // $part = 50;
     
@@ -78,6 +78,14 @@ foreach ($html->find('.video-item') as $e) {
     if(!empty($matches[4])) {
         $title = ucwords(str_replace('-', ' ', $matches[4]));
         $setFile = $matches[4];
+    }
+    if(!empty($matches[5])) {
+        $title = ucwords(str_replace('-', ' ', $matches[5]));
+        $setFile = $matches[5];
+    }
+    if(!empty($matches[6])) {
+        $title = ucwords(str_replace('-', ' ', $matches[6]));
+        $setFile = $matches[6];
     }
     echo '<a href="'.$link.'">'.$videoInfoArr[0].' - '.$part.' '.$c.'</a><br/>';
     echo $title.'<br/>';
@@ -263,8 +271,7 @@ foreach ($html->find('.video-item') as $e) {
                             } else {
                                 //echo $setNum .' get mew <br/>';
                                 echo $glink.'<br/>';
-                                $con = file_get_html($glink, false, $context);
-                                $code = $con->find('.content .card-body iframe', 0)->src;
+                                $code = file_get_html($glink, false, $context);
                                 $data_list = $site->get_video_id($code);
                                 $vdoList[$setNum] = $data_list;
                             }

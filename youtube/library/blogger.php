@@ -801,7 +801,13 @@ HTML;
                         $v_id = $param;
                     } else {
                         preg_match("/videoembed\/([^&]+)/i", $param, $code);
-                        $v_id = $code[1];
+                        if(strlen($code[1])>13) {
+                            $vid = explode('?',$code[1]);
+                            $v_id = $code[0];
+                        } else {
+                            $v_id = $code[1];
+                        }
+                        
                     }
                     break;
             default:
@@ -817,7 +823,9 @@ HTML;
     }
     public function check_v_type($param)
     {
-        if (preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $param)) {
+        if (preg_match('/ok.ru/', $param)) {
+            $v_type = 'ok';
+        }elseif (preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $param)) {
             $v_type = 'yt';
         } elseif (preg_match('/vimeo/', $param)) {
             $v_type = 'vimeo';
@@ -829,8 +837,6 @@ HTML;
             $v_type = 'dailymotion';
         } elseif (preg_match('/facebook.com/', $param) || preg_match('/fb.com/', $param)) {
             $v_type = 'fbvid';
-        } elseif (preg_match('/ok.ru/', $param)) {
-            $v_type = 'ok';
         } else {
             $v_type = '';
         }
