@@ -803,7 +803,7 @@ HTML;
                         preg_match("/videoembed\/([^&]+)/i", $param, $code);
                         if(strlen($code[1])>13) {
                             $vid = explode('?',$code[1]);
-                            $v_id = $code[0];
+                            $v_id = $vid[0];
                         } else {
                             $v_id = $code[1];
                         }

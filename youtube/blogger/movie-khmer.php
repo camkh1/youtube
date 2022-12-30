@@ -348,8 +348,10 @@ foreach ($html->find('.video-item') as $e) {
                     // }
                     
                     if(!empty($glink)) {
-                        $con = file_get_html($sp[$n], false, $context);
-                        $code = $con->find('section.content iframe', 0)->src;
+                        // $con = file_get_html($sp[$n], false, $context);
+                        // $code = $con->find('section.content iframe', 0)->src;
+                        // $data_list = $site->get_video_id($code);
+                        $code = file_get_html($glink, false, $context);
                         $data_list = $site->get_video_id($code);
                         $vdoList[$setNum] = $data_list;
                     } else {
