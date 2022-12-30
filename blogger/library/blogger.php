@@ -901,7 +901,7 @@ HTML;
                     if($LabelStatus == 'Continue') {
                         $Cates = 'Movies, Korean - Khmer Movies, Series Movies, Series Korean, Continue,Korean Continue, AD1';
                     } else {
-                       $Cates = 'Movies, Thai - Khmer, Series Movies, Series Thai, withads'; 
+                       $Cates = 'Movies, Korean Movies, Korean - Khmer Movies, Series Movies, Series Korean, AD1'; 
                     }
                     
                 } else {

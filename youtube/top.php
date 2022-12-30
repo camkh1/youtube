@@ -27,6 +27,11 @@ define("default_blog", "7271011833334695575");
 //define("get_post_blog", "4548242398775875765");
 define("get_post_blog", "4900901770956221335");
 define("get_from_feed", "https://www.video4khmer37.com/latest-new-khmer-movies-videos-1.html");
+
+/*this blog are the same in https://movie-khmer.com/ */
+define("blogger_feed", "https://www.blogger.com/feeds/1908673528093033049/posts/default");
+
+define("wp_feed", "https://movie-khmer.com/feed/");
 define('BITLY_USERNAME', 'o_19ln460ta4');
 define('BITLY_API_KEY', 'R_d25cf36a6098484cbdec62de87af48e9');
 //for current url
