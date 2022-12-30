@@ -1014,9 +1014,9 @@ HTML;
             case 'Korea':
                 if($LabelType == 'Drama') {
                     if($LabelStatus == 'Continue') {
-                        $Cates = 'Movies, Korean - Khmer Movies, Series Movies, Series Korean, Continue,Korean Continue, withads';
+                        $Cates = 'Movies, Korean Movies, Series Movies, Series Korean, Continue,Korean Continue, withads';
                     } else {
-                       $Cates = 'Movies, Thai - Khmer, Series Movies, Series Thai, withads'; 
+                       $Cates = 'Movies, Korean Movies, Series Movies, Series Korean, AD1'; 
                     }
                     
                 } else {
