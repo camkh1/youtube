@@ -50,6 +50,43 @@ if(!empty($_SESSION["last_url"])) {
     $thumb = $site->resize_image($thumb ,0);
     echo $thumb;
     echo '<br/>'.$title;
+    /*download image*/
+    $structure = dirname(__FILE__) . '/uploads/image/';
+    if (!file_exists($structure)) {
+        mkdir($structure, 0777, true);
+    }
+    
+    $ext = pathinfo($thumb, PATHINFO_EXTENSION);
+    if(empty($ext)) {
+        $ext = 'jpg';
+    }
+    $arrContextOptions=array(
+        "ssl"=>array(
+            "verify_peer"=>false,
+            "verify_peer_name"=>false,
+        ),
+    );
+    $file_title = strtotime(date('Y-m-d H:i:s'));
+    $file_title = $file_title.(rand(100,10000)).'.'.$ext;
+    $fileName = dirname(__FILE__) . '/uploads/image/'.$file_title;
+    $content = file_get_contents($thumb, false, stream_context_create($arrContextOptions));
+    $fp = fopen($fileName, "w");
+    fwrite($fp, $content);
+    fclose($fp);
+    /*End download image*/
+
+    /*water mark*/
+    include dirname(__FILE__) .'/library/ChipVN/Loader.php';
+    \ChipVN\Loader::registerAutoLoad();
+    $btncPosition = 'rt';
+    $btnPc = dirname(__FILE__) . '/uploads/watermark/hide.png';
+    \ChipVN\Image::watermark($fileName, $btnPc, $btncPosition);
+    /*End water mark*/
+    $file = str_replace('/', '\\', $fileName);
+    $fileupload = str_replace('\\', '\\\\', $file);
+    echo $fileupload.'<br/>';
+    $link = $_SESSION["last_url"];
+    $homeUrl = $_SESSION["last_url"];
 }
 ?>
 <head>
@@ -58,7 +95,7 @@ if(!empty($_SESSION["last_url"])) {
     <script type="text/javascript" src="<?php echo base_url; ?>assets/js/libs/jquery.min.js"></script>
 </head>
 <code id="codeB" style="width:300px;overflow:hidden;display:none"></code>
-    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault2=&quot;CODE: SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 300\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);const XMLHttpRequest = Components.Constructor(&quot;@mozilla.org/xmlextras/xmlhttprequest;1&quot;);var url_login = &quot;<?php echo @$urlLogin;?>&quot;, emil=&quot;<?php echo @$_COOKIE["email"];?>&quot;;</code>
+    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault2=&quot;CODE: SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 300\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);const XMLHttpRequest = Components.Constructor(&quot;@mozilla.org/xmlextras/xmlhttprequest;1&quot;);var url_login = &quot;<?php echo @$urlLogin;?>&quot;, emil=&quot;<?php echo @$_COOKIE["email"];?>&quot;, img=&quot;<?php echo @$fileupload;?>&quot;, links=&quot;<?php echo @$link;?>&quot;, homeUrl=&quot;<?php echo base_url;?>&quot;;</code>
     <script type="text/javascript">
         function runcode(codes) {
             var str = $("#examplecode5").text();
@@ -97,7 +134,7 @@ if(!empty($_SESSION["last_url"])) {
         }
     window.setTimeout( function(){
         <?php if(!empty($_COOKIE["email"]) && !empty($isLogin)) :?>
-        //load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');
+        load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMovToTelegram');
     <?php endif;?>
     }, 2000 );
     </script>
