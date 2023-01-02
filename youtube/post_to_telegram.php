@@ -68,6 +68,7 @@ if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) {
     );
     $file_title = strtotime(date('Y-m-d H:i:s'));
     $file_title = $file_title.(rand(100,10000)).'.'.$ext;
+    $_SESSION["unlinkimg"] = $file_title;
     $fileName = dirname(__FILE__) . '/uploads/image/'.$file_title;
     $content = file_get_contents($thumb, false, stream_context_create($arrContextOptions));
     $fp = fopen($fileName, "w");
@@ -89,7 +90,7 @@ if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) {
     $homeUrl = $_SESSION["last_url"];
 }
 if(!empty($_GET['unlink'])) {
-    @unlink(dirname(__FILE__) . '/uploads/image/'.$_GET['unlink']);
+    @unlink(dirname(__FILE__) . '/uploads/image/'.$_SESSION["unlinkimg"]);
     ?>
 <script>window.setTimeout( function(){
         window.location.href = "<?php echo base_url . 'close.php';?>";
