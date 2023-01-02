@@ -133,7 +133,7 @@ if(!empty($_SESSION["last_url"])) {
             }
         }
     window.setTimeout( function(){
-        <?php if(!empty($_COOKIE["email"]) && !empty($isLogin)) :?>
+        <?php if(!empty($_SESSION["last_url"])) :?>
         load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMovToTelegram');
     <?php endif;?>
     }, 2000 );
