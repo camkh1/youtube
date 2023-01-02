@@ -23,7 +23,7 @@ if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
     }
 }
 
-if(!empty($_SESSION["last_url"])) {
+if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) {
     $context = stream_context_create(
         array(
             "http" => array(
@@ -88,6 +88,15 @@ if(!empty($_SESSION["last_url"])) {
     $link = $_SESSION["last_url"];
     $homeUrl = $_SESSION["last_url"];
 }
+if(!empty($_GET['unlink'])) {
+    @unlink(dirname(__FILE__) . '/uploads/image/'.$_GET['unlink']);
+    ?>
+<script>window.setTimeout( function(){
+        window.location.href = "<?php echo base_url . 'close.php';?>";
+    }, 2000 );
+    </script>
+    <?php
+}
 ?>
 <head>
     <title>Auto Post to Blogger and Facebook</title>
@@ -95,7 +104,7 @@ if(!empty($_SESSION["last_url"])) {
     <script type="text/javascript" src="<?php echo base_url; ?>assets/js/libs/jquery.min.js"></script>
 </head>
 <code id="codeB" style="width:300px;overflow:hidden;display:none"></code>
-    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault2=&quot;CODE: SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 300\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);const XMLHttpRequest = Components.Constructor(&quot;@mozilla.org/xmlextras/xmlhttprequest;1&quot;);var url_login = &quot;<?php echo @$urlLogin;?>&quot;, emil=&quot;<?php echo @$_COOKIE["email"];?>&quot;, img=&quot;<?php echo @$fileupload;?>&quot;, links=&quot;<?php echo @$link;?>&quot;, homeUrl=&quot;<?php echo base_url;?>&quot;;</code>
+    <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault2=&quot;CODE: SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 300\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);const XMLHttpRequest = Components.Constructor(&quot;@mozilla.org/xmlextras/xmlhttprequest;1&quot;);var url_login = &quot;<?php echo @$urlLogin;?>&quot;, emil=&quot;<?php echo @$_COOKIE["email"];?>&quot;, img=&quot;<?php echo @$fileupload;?>&quot;, links=&quot;<?php echo @$link;?>&quot;, homeUrl=&quot;<?php echo base_url;?>&quot;, img_name=&quot;<?php echo @$$file_title;?>&quot;;</code>
     <script type="text/javascript">
         function runcode(codes) {
             var str = $("#examplecode5").text();
@@ -133,7 +142,7 @@ if(!empty($_SESSION["last_url"])) {
             }
         }
     window.setTimeout( function(){
-        <?php if(!empty($_SESSION["last_url"])) :?>
+        <?php if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) :?>
         load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMovToTelegram');
     <?php endif;?>
     }, 2000 );
