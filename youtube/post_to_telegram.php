@@ -19,7 +19,7 @@ if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
         header('Location: ' . $urlLogin);
     }
 }
-echo $_COOKIE["last_url"];
+echo $_SESSION["last_url"];
 ?>
 <head>
     <title>Auto Post to Blogger and Facebook</title>
