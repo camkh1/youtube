@@ -1,5 +1,8 @@
 <?php
 include 'top.php';
+include dirname(__FILE__) .'/library/simple_html_dom.php';
+include dirname(__FILE__) .'/library/blogger.php';
+$site = new blogger();
 $isLogin = false;
 $_SESSION['back'] = base_url . 'blogger/movie-khmer.php';
 $urlLogin = base_url .'login.php?back=' . urlencode($_SESSION['back']);
@@ -19,7 +22,35 @@ if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
         header('Location: ' . $urlLogin);
     }
 }
-echo $_SESSION["last_url"];
+
+if(!empty($_SESSION["last_url"])) {
+    $context = stream_context_create(
+        array(
+            "http" => array(
+                "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+            ),
+                "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            )
+        )
+    );
+    $html = file_get_html($_SESSION["last_url"], false, $context);
+    $title = @$html->find ( 'meta[property=og:title]', 0 )->content;
+    $og_image = @$html->find ( 'meta [property=og:image]', 0 )->content;
+    $image_src = @$html->find ( 'link [rel=image_src]', 0 )->href;
+    if (! empty ( $image_src )) {
+        $thumb = $image_src;
+    } elseif (! empty ( $html->find ( 'meta [property=og:image]', 0 )->content )) {
+        $thumb = $html->find ( 'meta [property=og:image]', 0 )->content;
+    } else {
+        $thumb = '';
+    }
+    echo $_SESSION["last_url"].'<br/>';
+    $thumb = $site->resize_image($thumb ,0);
+    echo $thumb;
+    echo '<br/>'.$title;
+}
 ?>
 <head>
     <title>Auto Post to Blogger and Facebook</title>

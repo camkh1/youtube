@@ -126,7 +126,9 @@ $blogger = new blogger();
                     }
                     $postobj = $blogger->postToBlogger($dataContent);
                     if(!empty($postobj->url)) {
-                        $_SESSION['last_url']    = @$postobj->url;
+                        if(preg_match ( '/bz24news.com/', $postobj->url ) || preg_match ( '/jc24news.com/', $postobj->url )){
+                            $_SESSION['last_url']    = @$postobj->url;
+                        }
                     }
                     $getpost = @$postobj->id;
                     /*Create CSV file for update later*/
