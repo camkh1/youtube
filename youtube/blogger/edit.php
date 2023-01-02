@@ -159,6 +159,7 @@ $blogger = new blogger();
                     $info = json_decode($_SESSION['tokenSessionKey']);
                     $dataContent->access_token = $info->access_token;
                     $postobj = $blogger->postToBlogger($dataContent);
+                    var_dump($postobj);
                     $getpost = @$postobj->id;
                     /*End post to Blog*/
                     $bidArr[] = array('bid'=> $bids->bid,'pid'=>$getpost,'status'=>1); 
