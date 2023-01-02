@@ -125,6 +125,7 @@ $blogger = new blogger();
                         $dataContent->pid      = 0;
                     }
                     $postobj = $blogger->postToBlogger($dataContent);
+                    var_dump($postobj);
                     $getpost = @$postobj->id;
                     /*Create CSV file for update later*/
                     if (!file_exists(dirname(__FILE__) . '/../uploads/blogger')) {
