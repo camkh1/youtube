@@ -144,7 +144,7 @@ foreach ($sectionA as $value) {
         /*End get all video from link*/ 
         $str = file_get_contents($upload_path.$checkForDup);
         $jsonFile = json_decode($str);
-        if(count($sp) == count($jsonFile->list)) {
+        if(count($part) == count($jsonFile->list)) {
             echo '<br/>list == list';
         }
         if($current == $date) {
@@ -164,7 +164,7 @@ foreach ($sectionA as $value) {
         /*End get all video from link*/
         $str = file_get_contents($upload_path.$checkForDup);
         $jsonFile = json_decode($str); 
-        if(count($sp) == count($jsonFile->list)) {
+        if(count($part) <= count($jsonFile->list)) {
             continue;
         }    
         if($current == $date) {
@@ -183,7 +183,7 @@ foreach ($sectionA as $value) {
     }
     $str = str_replace(' ', '', $content);
     preg_match_all('{"file":(.*)}', $str, $matches);
-    $prcot = $matches[0][0];
+    $prcot = @$matches[0][0];
     $prcot = str_replace(' ', '', $prcot);
     $prcot = str_replace('"file":"', '<a href="', $prcot);
     $prcot = str_replace("file':'", '<a href="', $prcot);
@@ -237,8 +237,7 @@ HTML;
     }
 
     if (empty($viddata)) {
-        echo 'no vdoList';
-        die;
+        continue;
     }
     $thumbIn = $site->resize_image($thumb,0);
     if(empty($uniq_id)) {
@@ -378,6 +377,7 @@ HTML;
 
     $i++;
 }
+echo '<script type="text/javascript">window.location = "' . base_url . 'close.php";</script>';
 die;
 
 $i = 0;
