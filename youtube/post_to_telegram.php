@@ -106,6 +106,7 @@ if(!empty($_GET['unlink'])) {
 </head>
 <code id="codeB" style="width:300px;overflow:hidden;display:none"></code>
     <code id="examplecode5" style="width:300px;overflow:hidden;display:none">var codedefault2=&quot;CODE: SET !EXTRACT_TEST_POPUP NO\n SET !TIMEOUT_PAGE 300\n SET !ERRORIGNORE YES\n SET !TIMEOUT_STEP 1\n&quot;;var wm=Components.classes[&quot;@mozilla.org/appshell/window-mediator;1&quot;].getService(Components.interfaces.nsIWindowMediator);var window=wm.getMostRecentWindow(&quot;navigator:browser&quot;);const XMLHttpRequest = Components.Constructor(&quot;@mozilla.org/xmlextras/xmlhttprequest;1&quot;);var url_login = &quot;<?php echo @$urlLogin;?>&quot;, emil=&quot;<?php echo @$_COOKIE["email"];?>&quot;, img=&quot;<?php echo @$fileupload;?>&quot;, links=&quot;<?php echo @$link;?>&quot;, homeUrl=&quot;<?php echo base_url;?>&quot;, img_name=&quot;<?php echo @$$file_title;?>&quot;;</code>
+    <input id="titleAdd" type="text" class="form-control" value="ចុចមើលរឿង👉 " />
     <script type="text/javascript">
         function runcode(codes) {
             var str = $("#examplecode5").text();
