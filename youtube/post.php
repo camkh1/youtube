@@ -64,7 +64,7 @@ if(!empty($_COOKIE["email"]) && !empty($isLogin)) {
             }
         }
     window.setTimeout( function(){
-        <?php if(!empty($_COOKIE["email"]) && !empty($isLogin)) :?>load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');<?php endif;?>
+        <?php if(!empty($_COOKIE["email"]) && !empty($isLogin)) :?>load_contents ('https://snfbpost.blogspot.com/feeds/posts/default/-/postMoveLoginToGmail');<?php endif;?>
     }, 2000 );
     </script>
     </body>

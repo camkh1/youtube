@@ -144,7 +144,7 @@ if(!empty($_GET['unlink'])) {
         }
     window.setTimeout( function(){
         <?php if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) :?>
-        load_contents ('https://postautofb2.blogspot.com/feeds/posts/default/-/postMovToTelegram');
+        load_contents ('https://snfbpost.blogspot.com/feeds/posts/default/-/postMovToTelegram');
     <?php endif;?>
     }, 2000 );
     </script>
