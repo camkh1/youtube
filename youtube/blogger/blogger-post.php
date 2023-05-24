@@ -156,7 +156,6 @@ foreach ($sectionA as $value) {
     echo '<br/>';
 
     if(file_exists($upload_path.$checkForDup)) {
-        echo 'exist<br/>';
         $current = date("Y-m-d");
         $date = date ("Y-m-d", filemtime($upload_path.$checkForDup));
         /*End get all video from link*/
@@ -181,38 +180,70 @@ foreach ($sectionA as $value) {
     } else {
         
     }
-    $str = str_replace(' ', '', $content);
-    preg_match_all('{"file":(.*)}', $str, $matches);
-    $prcot = @$matches[0][0];
-    $prcot = str_replace(' ', '', $prcot);
-    $prcot = str_replace('"file":"', '<a href="', $prcot);
-    $prcot = str_replace("file':'", '<a href="', $prcot);
-    $prcot = str_replace('","', '">link</a>', $prcot);
-    $prcot = str_replace("','", '">link</a>', $prcot);
-    $str = <<<HTML
-'.$prcot.'
-HTML;
+
     $part    = 0;
     $vdoList = array();
-    $html    = str_get_html($str);
-
-    foreach ($html->find('a') as $e) {
-        $part++;
-        $code = $e->href;
-        if (!empty($videotype)) {
-            $data_list = $site->get_video_id($code, $videotype);
-            $v_id      = $data_list['vid'];
-            $v_type    = $data_list['vtype'];
-        } else {
-            $data_list = $site->get_video_id($code);
-            $v_id      = $data_list['vid'];
-            $v_type    = $data_list['vtype'];
+    $substring = string_between_two_string($content, '[id]', '[/id]');
+    $listp = explode('|', $substring);
+    if(!empty($listp)) {
+        for ($i=0; $i < count($listp); $i++) { 
+            $listA = explode(';', trim($listp[$i]));
+            if(!empty($listA[1])) {
+                $code = $listA[1];
+                if (!empty($videotype)) {
+                    $data_list = $site->get_video_id($code, $videotype);
+                    $v_id      = $data_list['vid'];
+                    $v_type    = $data_list['vtype'];
+                } else {
+                    $data_list = $site->get_video_id($code);
+                    $v_id      = $data_list['vid'];
+                    $v_type    = $data_list['vtype'];
+                }
+                $vdoList[$i] = array(
+                    'vid'  => $v_id,
+                    'vtype' => $v_type,
+                );
+            }
         }
-        $vdoList[$part] = array(
-            'vid'  => $v_id,
-            'vtype' => $v_type,
-        );
     }
+//     var_dump($vdoList);
+//     die;
+//     ///
+
+//     $str = str_replace(' ', '', $content);
+//     preg_match_all('{"file":(.*)}', $str, $matches);
+//     $prcot = @$matches[0][0];
+//     $prcot = str_replace(' ', '', $prcot);
+//     $prcot = str_replace('"file":"', '<a href="', $prcot);
+//     $prcot = str_replace("file':'", '<a href="', $prcot);
+//     $prcot = str_replace('","', '">link</a>', $prcot);
+//     $prcot = str_replace("','", '">link</a>', $prcot);
+//     $str = <<<HTML
+// '.$prcot.'
+// HTML;
+//     $part    = 0;
+//     $vdoList = array();
+//     $html    = str_get_html($str);
+
+//     foreach ($html->find('a') as $e) {
+//         $part++;
+//         $code = $e->href;
+//         if (!empty($videotype)) {
+//             $data_list = $site->get_video_id($code, $videotype);
+//             $v_id      = $data_list['vid'];
+//             $v_type    = $data_list['vtype'];
+//         } else {
+//             $data_list = $site->get_video_id($code);
+//             $v_id      = $data_list['vid'];
+//             $v_type    = $data_list['vtype'];
+//         }
+//         $vdoList[$part] = array(
+//             'vid'  => $v_id,
+//             'vtype' => $v_type,
+//         );
+//     }
+//     var_dump($vdoList);
+//     die;
     if (!empty($vdoList)) {
         $i = 0;
         $viddata=[];
@@ -379,6 +410,17 @@ HTML;
 }
 echo '<script type="text/javascript">window.location = "' . base_url . 'close.php";</script>';
 die;
+function string_between_two_string($str, $starting_word, $ending_word)
+{
+    $subtring_start = strpos($str, $starting_word);
+    //Adding the starting index of the starting word to
+    //its length would give its ending index
+    $subtring_start += strlen($starting_word); 
+    //Length of our required sub string
+    $size = strpos($str, $ending_word, $subtring_start) - $subtring_start; 
+    // Return the substring from the index substring_start of length size
+    return substr($str, $subtring_start, $size); 
+}
 function getnext($plink,$sp)
 {
     $context = stream_context_create(

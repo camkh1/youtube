@@ -1,4 +1,5 @@
 <?php
+echo '<META HTTP-EQUIV="refresh" CONTENT="15">';
 include 'top.php';
 $isLogin = false;
 $_SESSION['back'] = base_url . '/blogger/movie-khmer.php';
