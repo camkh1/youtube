@@ -27,6 +27,7 @@ define("default_blog", "7271011833334695575");
 //define("get_post_blog", "4548242398775875765");
 define("get_post_blog", "4900901770956221335");
 define("get_from_feed", "https://www.video4khmer37.com/latest-new-khmer-movies-videos-1.html");
+define("thai_movies", "https://www.doomovie-hd.com/?r=movie_filter_by_year&year=2023");
 
 /*this blog are the same in https://movie-khmer.com/ */
 define("blogger_feed", "https://www.blogger.com/feeds/1908673528093033049/posts/default?max-results=50");
