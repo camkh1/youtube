@@ -30,7 +30,7 @@ define("get_from_feed", "https://www.video4khmer37.com/latest-new-khmer-movies-v
 define("thai_movies", "https://www.doomovie-hd.com/?r=movie_filter_by_year&year=2023");
 
 /*this blog are the same in https://movie-khmer.com/ */
-define("blogger_feed", "https://www.blogger.com/feeds/1908673528093033049/posts/default?max-results=50");
+define("blogger_feed", "https://www.blogger.com/feeds/2461095789922722435/posts/default?max-results=50");
 
 define("wp_feed", "https://movie-khmer.com/feed/");
 define('BITLY_USERNAME', 'o_19ln460ta4');
