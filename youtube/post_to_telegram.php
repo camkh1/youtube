@@ -58,7 +58,16 @@ if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) {
     
     $ext = pathinfo($thumb, PATHINFO_EXTENSION);
     if(empty($ext)) {
-        $ext = 'jpg';
+        $gext = 'jpg';
+    }
+    if (preg_match('/jpg/i', $ext)) {
+        $gext = $ext;
+    } elseif (preg_match('/jpeg/i', $ext)) {
+        $gext = $ext;
+    } elseif (preg_match('/png/i', $ext)) {
+        $gext = $ext;
+    } elseif (preg_match('/gif/i', $ext)) {
+        $gext = $ext;
     }
     $arrContextOptions=array(
         "ssl"=>array(
@@ -67,7 +76,7 @@ if(!empty($_SESSION["last_url"]) && empty($_GET['unlink'])) {
         ),
     );
     $file_title = strtotime(date('Y-m-d H:i:s'));
-    $file_title = $file_title.(rand(100,10000)).'.'.$ext;
+    $file_title = $file_title.(rand(100,10000)).'.'.$gext;
     $_SESSION["unlinkimg"] = $file_title;
     $fileName = dirname(__FILE__) . '/uploads/image/'.$file_title;
     $content = file_get_contents($thumb, false, stream_context_create($arrContextOptions));
